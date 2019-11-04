@@ -5,7 +5,7 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 public class Consumer {
     private static final String broker = "tcp://127.0.0.1:1883";
-    private static final String topic = "MQTT/+";
+    private static final String topic = "abcdef01234567";
     private static final String clientId = "MQTT_SUB_CLIENT";
 
     public static void main(String[] args) throws MqttException, InterruptedException {

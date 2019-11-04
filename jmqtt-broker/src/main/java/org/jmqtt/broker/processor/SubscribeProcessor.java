@@ -46,8 +46,12 @@ public class SubscribeProcessor implements RequestProcessor {
     @Override
     public void processRequest(ChannelHandlerContext ctx, MqttMessage mqttMessage) {
         MqttSubscribeMessage subscribeMessage = (MqttSubscribeMessage) mqttMessage;
+        log.info("------------subscribe message----------------");
+        log.info("{}" , subscribeMessage);
+        log.info("------------subscribe message----------------");
+
         String clientId = NettyUtil.getClientId(ctx.channel());
-        int messageId = subscribeMessage.variableHeader().messageId();
+        String messageId = subscribeMessage.variableHeader().messageId();
         ClientSession clientSession = ConnectManager.getInstance().getClient(clientId);
         List<Topic> validTopicList =validTopics(clientSession,subscribeMessage.payload().topicSubscriptions());
         if(validTopicList == null || validTopicList.size() == 0){

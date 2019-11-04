@@ -11,8 +11,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class DefaultFlowMessageStore implements FlowMessageStore {
 
-    private Map<String, ConcurrentHashMap<Integer,Message>> recCache = new ConcurrentHashMap<>();
-    private Map<String, ConcurrentHashMap<Integer,Message>> sendCache = new ConcurrentHashMap<>();
+    private Map<String, ConcurrentHashMap<String,Message>> recCache = new ConcurrentHashMap<>();
+    private Map<String, ConcurrentHashMap<String,Message>> sendCache = new ConcurrentHashMap<>();
 
     @Override
     public void clearClientFlowCache(String clientId) {
@@ -21,7 +21,7 @@ public class DefaultFlowMessageStore implements FlowMessageStore {
     }
 
     @Override
-    public Message getRecMsg(String clientId, int msgId) {
+    public Message getRecMsg(String clientId, String msgId) {
         return recCache.get(clientId).get(msgId);
     }
 
@@ -31,7 +31,7 @@ public class DefaultFlowMessageStore implements FlowMessageStore {
         if(!recCache.containsKey(clientId)){
             synchronized (recCache){
                 if(!recCache.containsKey(clientId)){
-                    recCache.put(clientId,new ConcurrentHashMap<Integer,Message>());
+                    recCache.put(clientId,new ConcurrentHashMap<String,Message>());
                 }
             }
         }
@@ -40,7 +40,7 @@ public class DefaultFlowMessageStore implements FlowMessageStore {
     }
 
     @Override
-    public Message releaseRecMsg(String clientId, int msgId) {
+    public Message releaseRecMsg(String clientId, String msgId) {
         return this.recCache.get(clientId).remove(msgId);
     }
 
@@ -67,13 +67,13 @@ public class DefaultFlowMessageStore implements FlowMessageStore {
     }
 
     @Override
-    public boolean releaseSendMsg(String clientId, int msgId) {
+    public boolean releaseSendMsg(String clientId, String msgId) {
         this.sendCache.get(clientId).remove(msgId);
         return true;
     }
 
     @Override
-    public boolean containSendMsg(String clientId, int msgId) {
+    public boolean containSendMsg(String clientId, String msgId) {
         return this.sendCache.get(clientId).contains(msgId);
     }
 }

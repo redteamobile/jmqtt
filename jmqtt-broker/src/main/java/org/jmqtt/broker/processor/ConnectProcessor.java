@@ -166,6 +166,7 @@ public class ConnectProcessor implements RequestProcessor {
         headers.put(MessageHeader.TOPIC,willTopic);
         headers.put(MessageHeader.WILL,true);
         Message message = new Message(Message.Type.WILL,headers,willPayload);
+        //message.setMsgId("00000000");
         message.setClientId(clientId);
         willMessageStore.storeWillMessage(clientId,message);
         log.info("[WillMessageStore] : {} store will message:{}",clientId,message);
@@ -213,10 +214,12 @@ public class ConnectProcessor implements RequestProcessor {
     }
 
     private boolean versionValid(int mqttVersion){
-        if(mqttVersion == 3 || mqttVersion == 4){
+        /*if(mqttVersion == 3 || mqttVersion == 4){
             return true;
         }
-        return false;
+        return false;*/
+        //适配云巴，所有版本号都返回true
+        return true;
     }
 
 }

@@ -59,7 +59,7 @@ public class RDBOfflineMessageStore implements OfflineMessageStore {
         return (RDBStorePrefix.OFFLINE_MESSAGE + clientId).getBytes(Charset.forName("UTF-8"));
     }
 
-    private byte[] key(String clientId,int msgId){
+    private byte[] key(String clientId,String msgId){
         return (RDBStorePrefix.OFFLINE_MESSAGE + clientId + msgId).getBytes(Charset.forName("UTF-8"));
     }
 

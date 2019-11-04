@@ -1,34 +1,24 @@
 package org.jmqtt.java;
 
-import org.eclipse.paho.client.mqttv3.*;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-public class Producer {
+/**
+ * @author Alex Liu
+ * @date 2019/10/30
+ */
+public class Producer2 {
     private static final String broker = "tcp://127.0.0.1:1883";
-    private static final String content = "abcdef1234567";
+    private static final String content = "new message";
     private static final int qos = 1;
-    private static final String topic = ",yali";
-    private static final String clientId = "MQTT_PUB_CLIENT";
+    private static final String topic = "7";
+    private static final String clientId = "MQTT_PUB_CLIENT2";
 
     public static void main(String[] args) throws MqttException, InterruptedException {
         MqttClient pubClient = getMqttClient();
-        pubClient.setCallback(new MqttCallback() {
-            @Override
-            public void connectionLost(Throwable throwable) {
-                System.out.println("Connect lost,do some thing to solve it");
-            }
-
-            @Override
-            public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
-                System.out.println("From topic: " + s);
-                System.out.println("Message content: " + new String(mqttMessage.getPayload()));
-            }
-
-            @Override
-            public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
-
-            }
-        });
         for(int i = 0; i < 3; i++){
             MqttMessage mqttMessage = getMqttMessage();
             pubClient.publish(topic,mqttMessage);

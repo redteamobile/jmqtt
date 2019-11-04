@@ -24,7 +24,7 @@ public class PubAckProcessor implements RequestProcessor {
     @Override
     public void processRequest(ChannelHandlerContext ctx, MqttMessage mqttMessage) {
         String clientId = NettyUtil.getClientId(ctx.channel());
-        int messageId = MessageUtil.getMessageId(mqttMessage);
+        String messageId = MessageUtil.getMessageId(mqttMessage);
         log.debug("[PubAck] -> Recieve PubAck message,clientId={},msgId={}",clientId,messageId);
         if(!flowMessageStore.containSendMsg(clientId,messageId)){
             log.warn("[PubAck] -> The message is not cached in Flow,clientId={},msgId={}",clientId,messageId);
