@@ -62,7 +62,9 @@ public class ConnectProcessor implements RequestProcessor {
 
     @Override
     public void processRequest(ChannelHandlerContext ctx, MqttMessage mqttMessage) {
+        log.info("-----Connect-----");
         MqttConnectMessage connectMessage = (MqttConnectMessage)mqttMessage;
+        log.info("Connect : {}" , mqttMessage);
         MqttConnectReturnCode returnCode = null;
         int mqttVersion = connectMessage.variableHeader().version();
         String clientId = connectMessage.payload().clientIdentifier();

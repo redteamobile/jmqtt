@@ -165,49 +165,49 @@
     </appender>
 
     <logger name="brokerLog" additivity="false">
-        <level value="INFO"/>
+        <level value="DEBUG"/>
         <appender-ref ref="JmqttBrokerAppender"/>
         <appender-ref ref="STDOUT"/>
     </logger>
 
     <logger name="clientTraceLog" additivity="false">
-        <level value="INFO"/>
+        <level value="DEBUG"/>
         <appender-ref ref="JmqttClientTraceAppender"/>
         <appender-ref ref="STDOUT"/>
     </logger>
 
     <logger name="messageTraceLog" additivity="false">
-        <level value="INFO"/>
+        <level value="DEBUG"/>
         <appender-ref ref="JmqttMessageTraceAppender"/>
         <appender-ref ref="STDOUT"/>
     </logger>
 
     <logger name="remotingLog" additivity="false">
-        <level value="INFO"/>
+        <level value="DEBUG"/>
         <appender-ref ref="JmqttRemotingAppender"/>
         <appender-ref ref="STDOUT"/>
     </logger>
 
     <logger name="storeLog" additivity="false">
-        <level value="INFO"/>
+        <level value="DEBUG"/>
         <appender-ref ref="JmqttStoreAppender"/>
         <appender-ref ref="STDOUT"/>
     </logger>
 
     <logger name="clusterLog" additivity="false">
-        <level value="INFO"/>
+        <level value="DEBUG"/>
         <appender-ref ref="JmqttClusterTraceAppender"/>
         <appender-ref ref="STDOUT"/>
     </logger>
 
     <logger name="otherLog" additivity="false">
-        <level value="INFO"/>
+        <level value="DEBUG"/>
         <appender-ref ref="JmqttOtherTraceAppender"/>
         <appender-ref ref="STDOUT"/>
     </logger>
 
     <root>
-        <level value="INFO"/>
+        <level value="DEBUG"/>
         <appender-ref ref="STDOUT"/>
     </root>
 </configuration>
