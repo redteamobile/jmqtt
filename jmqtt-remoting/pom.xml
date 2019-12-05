@@ -37,7 +37,7 @@
         <dependency>
             <groupId>com.redteamobile.netty</groupId>
             <artifactId>netty-all</artifactId>
-            <version>4.1.42.2Final</version>
+            <version>4.1.42.16.Final</version>
         </dependency>
     </dependencies>
 

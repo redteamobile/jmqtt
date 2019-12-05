@@ -122,6 +122,7 @@ public class ConnectProcessor implements RequestProcessor {
                 ConnectManager.getInstance().putClient(clientId,clientSession);
             }
             MqttConnAckMessage ackMessage = MessageUtil.getConnectAckMessage(returnCode,sessionPresent);
+            log.info("------connectAck ------ : {}" , ackMessage);
             ctx.writeAndFlush(ackMessage);
             if(returnCode != MqttConnectReturnCode.CONNECTION_ACCEPTED){
                 ctx.close();

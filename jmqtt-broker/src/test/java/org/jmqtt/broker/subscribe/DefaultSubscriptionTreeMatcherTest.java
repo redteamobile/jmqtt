@@ -30,6 +30,12 @@ public class DefaultSubscriptionTreeMatcherTest {
     }
 
     @Test
+    public void test(){
+        byte b = (byte) 0x12;
+        System.out.println();
+    }
+
+    @Test
     public void match() {
         String[] topics = new String[4];
         String[] clientIds = new String[10];

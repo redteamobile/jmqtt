@@ -21,7 +21,7 @@ public abstract class AbstractMessageProcessor {
         this.messageTransfer = messageTransfer;
     }
 
-    protected void  processMessage(Message message){
+    protected void processMessage(Message message){
         this.messageDispatcher.appendMessage(message);
         boolean retain = (boolean) message.getHeader(MessageHeader.RETAIN);
         if(retain){

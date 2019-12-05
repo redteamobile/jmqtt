@@ -22,7 +22,7 @@ public class PubCompProcessor implements RequestProcessor {
     @Override
     public void processRequest(ChannelHandlerContext ctx, MqttMessage mqttMessage) {
         String clientId = NettyUtil.getClientId(ctx.channel());
-        String messageId = MessageUtil.getMessageId(mqttMessage);
+        long messageId = MessageUtil.getMessageId(mqttMessage);
         boolean isContain = flowMessageStore.releaseSendMsg(clientId,messageId);
         log.debug("[PubComp] -> Recieve PubCom and remove the flow message,clientId={},msgId={}",clientId,messageId);
         if(!isContain){

@@ -31,7 +31,7 @@ public class RDBFlowMessageStore implements FlowMessageStore {
     }
 
     @Override
-    public Message getRecMsg(String clientId, String msgId) {
+    public Message getRecMsg(String clientId, long msgId) {
         byte[] value = this.rdb.get(recColumnFamilyHandle(),recKey(clientId,msgId));
         if(value == null){
             return null;
@@ -51,7 +51,7 @@ public class RDBFlowMessageStore implements FlowMessageStore {
     }
 
     @Override
-    public Message releaseRecMsg(String clientId, String msgId) {
+    public Message releaseRecMsg(String clientId, long msgId) {
         byte[] key = recKey(clientId,msgId);
         byte[] value = this.rdb.get(recColumnFamilyHandle(),key);
         if(value == null){
@@ -85,20 +85,20 @@ public class RDBFlowMessageStore implements FlowMessageStore {
     }
 
     @Override
-    public boolean releaseSendMsg(String clientId, String msgId) {
+    public boolean releaseSendMsg(String clientId, long msgId) {
         return this.rdb.delete(sendColumnFamilyHandle(),sendKey(clientId,msgId));
     }
 
     @Override
-    public boolean containSendMsg(String clientId, String msgId) {
+    public boolean containSendMsg(String clientId, long msgId) {
         return this.rdb.get(sendColumnFamilyHandle(),sendKey(clientId,msgId)) != null;
     }
 
-    private byte[] sendKey(String clientId,String msgId){
+    private byte[] sendKey(String clientId,long msgId){
         return (RDBStorePrefix.SEND_FLOW_MESSAGE + clientId + msgId).getBytes(Charset.forName("UTF-8"));
     }
 
-    private byte[] recKey(String clientId,String msgId){
+    private byte[] recKey(String clientId,long msgId){
         return (RDBStorePrefix.REC_FLOW_MESSAGE + clientId + msgId).getBytes(Charset.forName("UTF-8"));
     }
 

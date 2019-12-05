@@ -51,7 +51,7 @@ public class SubscribeProcessor implements RequestProcessor {
         log.info("------------subscribe message----------------");
 
         String clientId = NettyUtil.getClientId(ctx.channel());
-        String messageId = subscribeMessage.variableHeader().messageId();
+        long messageId = subscribeMessage.variableHeader().messageId();
         ClientSession clientSession = ConnectManager.getInstance().getClient(clientId);
         List<Topic> validTopicList =validTopics(clientSession,subscribeMessage.payload().topicSubscriptions());
         if(validTopicList == null || validTopicList.size() == 0){
@@ -61,6 +61,7 @@ public class SubscribeProcessor implements RequestProcessor {
         List<Integer> ackQos = getTopicQos(validTopicList);
         MqttMessage subAckMessage = MessageUtil.getSubAckMessage(messageId,ackQos);
         ctx.writeAndFlush(subAckMessage);
+        log.info("send subACK , ack = {}" , subAckMessage);
         // send retain messages
         List<Message> retainMessages = subscribe(clientSession,validTopicList);
         dispatcherRetainMessage(clientSession,retainMessages);

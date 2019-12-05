@@ -22,7 +22,9 @@ public class BrokerStartup {
 
     public static void main(String[] args) {
         try {
-            start(args);
+            BrokerController brokerController = start(args);
+            Thread.sleep(1000*60*2);
+            ProduceForYunba.go(brokerController);
         } catch (Exception e) {
             System.out.println("Jmqtt start failure,cause = " + e);
             e.printStackTrace();
@@ -61,6 +63,7 @@ public class BrokerStartup {
         configurator.doConfigure(jmqttHome + "/conf/logback_broker.xml");
 
         BrokerController brokerController = new BrokerController(brokerConfig,nettyConfig, storeConfig, clusterConfig);
+        BrokerController.instance = brokerController;
         brokerController.start();
 
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {

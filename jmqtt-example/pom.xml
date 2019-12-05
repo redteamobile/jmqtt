@@ -24,5 +24,17 @@
             <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
             <version>1.2.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.jmqtt</groupId>
+            <artifactId>jmqtt-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jmqtt</groupId>
+            <artifactId>jmqtt-remoting</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jmqtt</groupId>
+            <artifactId>jmqtt-broker</artifactId>
+        </dependency>
     </dependencies>
 </project>

@@ -1,10 +1,7 @@
 package org.jmqtt.broker.processor;
 
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.mqtt.MqttMessage;
-import io.netty.handler.codec.mqtt.MqttPubAckMessage;
-import io.netty.handler.codec.mqtt.MqttPublishMessage;
-import io.netty.handler.codec.mqtt.MqttQoS;
+import io.netty.handler.codec.mqtt.*;
 import io.netty.util.ReferenceCountUtil;
 import org.jmqtt.broker.BrokerController;
 import org.jmqtt.broker.acl.PubSubPermission;
@@ -78,19 +75,25 @@ public class PublishProcessor extends AbstractMessageProcessor implements Reques
              */
             if(",yali".equals(topic)){
                 log.info("---------" + mqttMessage + "-------------");
-                String messageId = publishMessage.variableHeader().messageId();
+                long messageId = publishMessage.variableHeader().messageId();
+                log.info("------ publish get messageId  = {}" , messageId);
                 MqttMessage subAckMessage = MessageUtil.getSubAckMessage(messageId , defaultQos);
+                MqttSubAckMessage subAckMessage1 = (MqttSubAckMessage) subAckMessage;
+                log.info("------ publish get sub ack messageId = {}" , subAckMessage1.variableHeader().messageId());
                 ctx.writeAndFlush(subAckMessage);
                 //subscribe topic
                 byte[] messagePayloadBytes = MessageUtil.readBytesFromByteBuf(((MqttPublishMessage) mqttMessage).payload());
-                log.info("length = {}" , messagePayloadBytes.length);
+                /*log.info("length = {}" , messagePayloadBytes.length);
                 log.info(new String(messagePayloadBytes));
                 byte[] topicNameBytes = new byte[messagePayloadBytes.length - 6];
-                System.arraycopy(messagePayloadBytes , 6 , topicNameBytes ,0 ,  topicNameBytes.length);
-                String topicName = new String(topicNameBytes);
+                System.arraycopy(messagePayloadBytes , 6 , topicNameBytes ,0 ,  topicNameBytes.length);*/
+                String topicName = new String(messagePayloadBytes);
                 log.debug("------topic name = {} -----" , topicName);
                 Topic subscribeTopic = new Topic(topicName , 1);
                 subscribe(clientSession,subscribeTopic);
+                MqttPubAckMessage pubAckMessage = MessageUtil.getPubAckMessage(publishMessage.variableHeader().packetId());
+                log.debug("------publishAck = {} -----" , pubAckMessage);
+                ctx.writeAndFlush(pubAckMessage);
                 return;
             }
 
@@ -98,6 +101,7 @@ public class PublishProcessor extends AbstractMessageProcessor implements Reques
             innerMsg.setClientId(clientId);
             innerMsg.setType(Message.Type.valueOf(mqttMessage.fixedHeader().messageType().value()));
             Map<String,Object> headers = new HashMap<>();
+            log.debug("topic : {}" , publishMessage.variableHeader().topicName());
             headers.put(MessageHeader.TOPIC,publishMessage.variableHeader().topicName());
             headers.put(MessageHeader.QOS,publishMessage.fixedHeader().qosLevel().value());
             headers.put(MessageHeader.RETAIN,publishMessage.fixedHeader().isRetain());

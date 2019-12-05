@@ -14,7 +14,7 @@ public class Producer2 {
     private static final String broker = "tcp://127.0.0.1:1883";
     private static final String content = "new message";
     private static final int qos = 1;
-    private static final String topic = "7";
+    private static final String topic = "abcdef01234567";
     private static final String clientId = "MQTT_PUB_CLIENT2";
 
     public static void main(String[] args) throws MqttException, InterruptedException {

@@ -103,7 +103,7 @@
               class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${user.home}/logs/jmqttlogs/messageTrace.log</file>
         <append>true</append>
-        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+        <rollingPolicy class="ch.qos.logb-ack.core.rolling.FixedWindowRollingPolicy">
             <fileNamePattern>${user.home}/logs/jmqttlogs/otherdays/messageTrace.%i.log.gz</fileNamePattern>
             <minIndex>1</minIndex>
             <maxIndex>20</maxIndex>

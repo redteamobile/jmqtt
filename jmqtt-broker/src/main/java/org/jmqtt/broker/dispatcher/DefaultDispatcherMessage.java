@@ -126,7 +126,7 @@ public class DefaultDispatcherMessage implements MessageDispatcher {
                             ClientSession clientSession = ConnectManager.getInstance().getClient(subscription.getClientId());
                             if (ConnectManager.getInstance().containClient(clientId)) {
                                 int qos = MessageUtil.getMinQos((int) message.getHeader(MessageHeader.QOS), subscription.getQos());
-                                String messageId = clientSession.generateMessageId();
+                                long messageId = clientSession.generateMessageId();
                                 message.putHeader(MessageHeader.QOS, qos);
                                 message.setMsgId(messageId);
                                 if (qos > 0) {
@@ -134,6 +134,7 @@ public class DefaultDispatcherMessage implements MessageDispatcher {
                                 }
                                 MqttPublishMessage publishMessage = MessageUtil.getPubMessage(message, false, qos, messageId);
                                 clientSession.getCtx().writeAndFlush(publishMessage);
+                                log.info("wirte message \"{}\" to \"{}\"" , publishMessage , clientId);
                             } else {
                                 offlineMessageStore.addOfflineMessage(clientId, message);
                             }
