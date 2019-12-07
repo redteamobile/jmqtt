@@ -10,6 +10,7 @@ import org.jmqtt.broker.acl.PubSubPermission;
 import org.jmqtt.broker.subscribe.SubscriptionMatcher;
 import org.jmqtt.common.bean.*;
 import org.jmqtt.common.log.LoggerName;
+import org.jmqtt.persistent.asyncTask.AsyncTask;
 import org.jmqtt.remoting.netty.RequestProcessor;
 import org.jmqtt.remoting.session.ClientSession;
 import org.jmqtt.remoting.session.ConnectManager;
@@ -20,6 +21,7 @@ import org.jmqtt.store.RetainMessageStore;
 import org.jmqtt.store.SubscriptionStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,6 +30,9 @@ import java.util.List;
 public class SubscribeProcessor implements RequestProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(LoggerName.MESSAGE_TRACE);
+
+    @Autowired
+    private AsyncTask asyncTask;
 
     private SubscriptionMatcher subscriptionMatcher;
     private RetainMessageStore retainMessageStore;
@@ -82,6 +87,10 @@ public class SubscribeProcessor implements RequestProcessor {
             Subscription subscription = new Subscription(clientSession.getClientId(),topic.getTopicName(),topic.getQos());
             boolean subRs = this.subscriptionMatcher.subscribe(subscription);
             if(subRs){
+
+                //订阅成功后将记录持久化到数据库表
+                asyncTask.subscribe(topic.getTopicName() , clientSession.getClientId());
+
                 if(retainMessages == null){
                     retainMessages = retainMessageStore.getAllRetainMessage();
                 }

@@ -4,6 +4,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.mqtt.MqttMessage;
 import org.jmqtt.broker.BrokerController;
 import org.jmqtt.broker.subscribe.SubscriptionMatcher;
+import org.jmqtt.persistent.asyncTask.AsyncTask;
 import org.jmqtt.remoting.session.ClientSession;
 import org.jmqtt.common.bean.Subscription;
 import org.jmqtt.common.log.LoggerName;
@@ -15,7 +16,9 @@ import org.jmqtt.store.SubscriptionStore;
 import org.jmqtt.store.WillMessageStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.xml.ws.Action;
 import java.util.Collection;
 
 public class DisconnectProcessor implements RequestProcessor {
@@ -25,6 +28,9 @@ public class DisconnectProcessor implements RequestProcessor {
     private SessionStore sessionStore;
     private SubscriptionStore subscriptionStore;
     private SubscriptionMatcher subscriptionMatcher;
+
+    @Autowired
+    private AsyncTask asyncTask;
 
     public DisconnectProcessor(BrokerController brokerController){
         this.willMessageStore = brokerController.getWillMessageStore();
@@ -43,6 +49,7 @@ public class DisconnectProcessor implements RequestProcessor {
         clearSubscriptions(clientSession);
         clearWillMessage(clientSession.getClientId());
         ConnectManager.getInstance().removeClient(clientId);
+        asyncTask.disconnect(clientId);
         ctx.close();
     }
 

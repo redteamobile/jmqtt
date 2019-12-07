@@ -6,6 +6,7 @@ import io.netty.handler.codec.mqtt.MqttUnsubAckMessage;
 import io.netty.handler.codec.mqtt.MqttUnsubscribeMessage;
 import io.netty.handler.codec.mqtt.MqttUnsubscribePayload;
 import org.jmqtt.broker.subscribe.SubscriptionMatcher;
+import org.jmqtt.persistent.asyncTask.AsyncTask;
 import org.jmqtt.remoting.session.ClientSession;
 import org.jmqtt.common.log.LoggerName;
 import org.jmqtt.remoting.netty.RequestProcessor;
@@ -15,6 +16,7 @@ import org.jmqtt.remoting.util.NettyUtil;
 import org.jmqtt.store.SubscriptionStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Objects;
@@ -22,6 +24,9 @@ import java.util.Objects;
 public class UnSubscribeProcessor implements RequestProcessor {
 
     private Logger log = LoggerFactory.getLogger(LoggerName.CLIENT_TRACE);
+
+    @Autowired
+    private AsyncTask asyncTask;
 
     private SubscriptionMatcher subscriptionMatcher;
     private SubscriptionStore subscriptionStore;
@@ -44,6 +49,7 @@ public class UnSubscribeProcessor implements RequestProcessor {
         topics.forEach( topic -> {
             subscriptionMatcher.unSubscribe(topic,clientId);
             subscriptionStore.removeSubscription(clientId,topic);
+            asyncTask.unsubscribe(topic , clientId);
         });
         MqttUnsubAckMessage unsubAckMessage = MessageUtil.getUnSubAckMessage(MessageUtil.getMessageId(mqttMessage));
         ctx.writeAndFlush(unsubAckMessage);

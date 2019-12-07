@@ -9,7 +9,12 @@ import org.jmqtt.common.config.ClusterConfig;
 import org.jmqtt.common.config.NettyConfig;
 import org.jmqtt.common.config.StoreConfig;
 import org.jmqtt.common.helper.MixAll;
+import org.jmqtt.persistent.PersistentApplication;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.annotation.Persistent;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -18,13 +23,19 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Properties;
 
+@SpringBootApplication
+@ComponentScan(value = {"org.jmqtt.broker", "org.jmqtt.persistent"})
 public class BrokerStartup {
 
     public static void main(String[] args) {
         try {
+            PersistentApplication.main(args);
+
             BrokerController brokerController = start(args);
-            Thread.sleep(1000*60*2);
-            ProduceForYunba.go(brokerController);
+
+
+            /*Thread.sleep(1000*60*2);
+            ProduceForYunba.go(brokerController);*/
         } catch (Exception e) {
             System.out.println("Jmqtt start failure,cause = " + e);
             e.printStackTrace();

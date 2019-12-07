@@ -1,5 +1,6 @@
 package org.jmqtt.broker.processor;
 
+import com.sun.deploy.util.SessionState;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.internal.ChannelUtils;
 import io.netty.handler.codec.mqtt.*;
@@ -9,6 +10,7 @@ import org.jmqtt.broker.acl.ConnectPermission;
 import org.jmqtt.broker.dispatcher.InnerMessageTransfer;
 import org.jmqtt.broker.recover.ReSendMessageService;
 import org.jmqtt.broker.subscribe.SubscriptionMatcher;
+import org.jmqtt.common.constant.Constants;
 import org.jmqtt.common.helper.SerializeHelper;
 import org.jmqtt.group.common.ClusterNodeManager;
 import org.jmqtt.group.common.InvokeCallback;
@@ -17,6 +19,8 @@ import org.jmqtt.group.protocol.ClusterRemotingCommand;
 import org.jmqtt.group.protocol.ClusterRequestCode;
 import org.jmqtt.group.protocol.ClusterResponseCode;
 import org.jmqtt.group.protocol.CommandConstant;
+import org.jmqtt.persistent.entity.Client;
+import org.jmqtt.persistent.service.ClientService;
 import org.jmqtt.remoting.session.ClientSession;
 import org.jmqtt.common.bean.Message;
 import org.jmqtt.common.bean.MessageHeader;
@@ -30,11 +34,14 @@ import org.jmqtt.remoting.util.RemotingHelper;
 import org.jmqtt.store.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 
-
 public class ConnectProcessor implements RequestProcessor {
+
+    @Autowired
+    private ClientService clientService;
 
     private static final Logger log = LoggerFactory.getLogger(LoggerName.CLIENT_TRACE);
 
@@ -58,6 +65,7 @@ public class ConnectProcessor implements RequestProcessor {
         this.reSendMessageService = brokerController.getReSendMessageService();
         this.subscriptionMatcher = brokerController.getSubscriptionMatcher();
         this.messageTransfer = brokerController.getInnerMessageTransfer();
+
     }
 
     @Override
@@ -130,6 +138,20 @@ public class ConnectProcessor implements RequestProcessor {
                 return;
             }
             log.info("[CONNECT] -> {} connect to this mqtt server",clientId);
+
+            //将设备上线消息持久化到cthulhu
+            Client client = clientService.findByClientId(clientId);
+            if(client != null){
+                client.setStatus(true);
+                client.setLastConnectTime(new Date());
+            }else{
+                client = Client.builder()
+                        .clientId(clientId).username(userName).status(true).createTime(new Date())
+                        .lastConnectTime(new Date()).type(Constants.CLIENT_TYPE)
+                        .build();
+            }
+            clientService.save(client);
+
             reConnect2SendMessage(clientId);
             newClientNotify(clientSession);
         }catch(Exception ex){

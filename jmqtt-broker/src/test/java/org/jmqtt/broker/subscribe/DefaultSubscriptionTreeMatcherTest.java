@@ -1,20 +1,30 @@
 package org.jmqtt.broker.subscribe;
 
+import javafx.application.Application;
 import org.jmqtt.common.bean.Subscription;
+import org.jmqtt.persistent.asyncTask.AsyncTask;
+import org.jmqtt.persistent.utils.SpringUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.Assert.*;
-
+@SpringBootTest
+@RunWith(SpringRunner.class)
+/*@RunWith(SpringRunner.class)*/
 public class DefaultSubscriptionTreeMatcherTest {
 
     private SubscriptionMatcher subscriptionMatcher;
+
+    @Autowired
+    private AsyncTask asyncTask;
 
     @Before
     public void init(){
@@ -33,6 +43,18 @@ public class DefaultSubscriptionTreeMatcherTest {
     public void test(){
         byte b = (byte) 0x12;
         System.out.println();
+    }
+
+    @Test
+    public void testAsy() throws Exception{
+        asyncTask.unsubscribe("12345" , "LTHTest");
+        Thread.currentThread().sleep(30000);
+    }
+
+    @Test
+    public void testGet(){
+        AsyncTask asyncTask = SpringUtil.getBean(AsyncTask.class);
+        asyncTask.disconnect("lthtest");
     }
 
     @Test

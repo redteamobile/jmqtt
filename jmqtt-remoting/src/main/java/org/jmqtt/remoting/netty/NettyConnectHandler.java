@@ -6,13 +6,19 @@ import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.jmqtt.common.log.LoggerName;
+import org.jmqtt.persistent.asyncTask.AsyncTask;
+import org.jmqtt.persistent.utils.SpringUtil;
+import org.jmqtt.remoting.util.NettyUtil;
 import org.jmqtt.remoting.util.RemotingHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class NettyConnectHandler extends ChannelDuplexHandler {
 
     private static final Logger log = LoggerFactory.getLogger(LoggerName.REMOTING);
+
+    private AsyncTask asyncTask;
 
     private NettyEventExcutor eventExcutor;
 
@@ -32,6 +38,8 @@ public class NettyConnectHandler extends ChannelDuplexHandler {
         final String remoteAddr = RemotingHelper.getRemoteAddr(ctx.channel());
         log.debug("[ChannelInactive] -> addr = {}",remoteAddr);
         this.eventExcutor.putNettyEvent(new NettyEvent(remoteAddr,NettyEventType.CLOSE,ctx.channel()));
+        String clientId = NettyUtil.getClientId(ctx.channel());
+        asyncTask.disconnect(clientId);
     }
 
     @Override
