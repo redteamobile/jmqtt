@@ -5,6 +5,7 @@ import io.netty.handler.codec.mqtt.MqttMessage;
 import org.jmqtt.broker.BrokerController;
 import org.jmqtt.broker.subscribe.SubscriptionMatcher;
 import org.jmqtt.persistent.asyncTask.AsyncTask;
+import org.jmqtt.persistent.utils.SpringUtil;
 import org.jmqtt.remoting.session.ClientSession;
 import org.jmqtt.common.bean.Subscription;
 import org.jmqtt.common.log.LoggerName;
@@ -28,8 +29,6 @@ public class DisconnectProcessor implements RequestProcessor {
     private SessionStore sessionStore;
     private SubscriptionStore subscriptionStore;
     private SubscriptionMatcher subscriptionMatcher;
-
-    @Autowired
     private AsyncTask asyncTask;
 
     public DisconnectProcessor(BrokerController brokerController){
@@ -37,6 +36,7 @@ public class DisconnectProcessor implements RequestProcessor {
         this.sessionStore = brokerController.getSessionStore();
         this.subscriptionStore = brokerController.getSubscriptionStore();
         this.subscriptionMatcher = brokerController.getSubscriptionMatcher();
+        this.asyncTask = SpringUtil.getBean(AsyncTask.class);
     }
     @Override
     public void processRequest(ChannelHandlerContext ctx, MqttMessage mqttMessage) {

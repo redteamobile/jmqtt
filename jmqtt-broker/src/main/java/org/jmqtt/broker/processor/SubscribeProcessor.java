@@ -11,6 +11,7 @@ import org.jmqtt.broker.subscribe.SubscriptionMatcher;
 import org.jmqtt.common.bean.*;
 import org.jmqtt.common.log.LoggerName;
 import org.jmqtt.persistent.asyncTask.AsyncTask;
+import org.jmqtt.persistent.utils.SpringUtil;
 import org.jmqtt.remoting.netty.RequestProcessor;
 import org.jmqtt.remoting.session.ClientSession;
 import org.jmqtt.remoting.session.ConnectManager;
@@ -30,8 +31,6 @@ import java.util.List;
 public class SubscribeProcessor implements RequestProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(LoggerName.MESSAGE_TRACE);
-
-    @Autowired
     private AsyncTask asyncTask;
 
     private SubscriptionMatcher subscriptionMatcher;
@@ -46,6 +45,7 @@ public class SubscribeProcessor implements RequestProcessor {
         this.flowMessageStore = controller.getFlowMessageStore();
         this.subscriptionStore = controller.getSubscriptionStore();
         this.pubSubPermission = controller.getPubSubPermission();
+        this.asyncTask = SpringUtil.getBean(AsyncTask.class);
     }
 
     @Override

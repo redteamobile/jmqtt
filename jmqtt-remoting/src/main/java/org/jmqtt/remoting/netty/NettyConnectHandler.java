@@ -24,6 +24,7 @@ public class NettyConnectHandler extends ChannelDuplexHandler {
 
     public NettyConnectHandler(NettyEventExcutor nettyEventExcutor){
         this.eventExcutor = nettyEventExcutor;
+        this.asyncTask = SpringUtil.getBean(AsyncTask.class);
     }
 
     @Override

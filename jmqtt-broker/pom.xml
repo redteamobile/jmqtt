@@ -6,8 +6,6 @@
         <artifactId>jmqtt</artifactId>
         <groupId>org.jmqtt</groupId>
         <version>1.1.0</version>
-        <relativePath>../pom.xml</relativePath>
-
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -45,32 +43,32 @@
             <artifactId>persistent</artifactId>
         </dependency>
 
-        <dependency>
+<!--        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <version>1.5.8.RELEASE</version>
-        </dependency>
+        </dependency>-->
     </dependencies>
 
-    <build>
+ <!--   <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <!-- 指定该Main Class为全局的唯一入口 -->
+                    &lt;!&ndash; 指定该Main Class为全局的唯一入口 &ndash;&gt;
                     <mainClass> org.jmqtt.broker.BrokerStartup</mainClass>
                     <layout>ZIP</layout>
                 </configuration>
                 <executions>
                     <execution>
                         <goals>
-                            <goal>repackage</goal><!--可以把依赖的包都打包到生成的Jar包中-->
+                            <goal>repackage</goal>&lt;!&ndash;可以把依赖的包都打包到生成的Jar包中&ndash;&gt;
                         </goals>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
-    </build>
+    </build>-->
 
 </project>

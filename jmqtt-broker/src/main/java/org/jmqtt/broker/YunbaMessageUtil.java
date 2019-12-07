@@ -1,45 +1,55 @@
 package org.jmqtt.broker;
 
-import org.jmqtt.broker.BrokerController;
 import org.jmqtt.broker.dispatcher.InnerMessageTransfer;
 import org.jmqtt.broker.dispatcher.MessageDispatcher;
 import org.jmqtt.common.bean.Message;
 import org.jmqtt.common.bean.MessageHeader;
 import org.jmqtt.remoting.util.MessageUtil;
 import org.jmqtt.store.RetainMessageStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 用于向broker推送符合yunba协议的mqtt消息
+ *
  * @author Alex Liu
  * @date 2019/11/13
  */
-public class ProduceForYunba {
+public class YunbaMessageUtil {
+
+    private static final Logger logger = LoggerFactory.getLogger(YunbaMessageUtil.class);
+
     private static MessageDispatcher messageDispatcher;
     private static InnerMessageTransfer messageTransfer;
     private static RetainMessageStore retainMessageStore;
 
-    private static final String broker = "tcp://127.0.0.1:1883";
-    private static final String content = "{\"tranId\":\"3BB5666C81C747BFAAC558651D4954C\",\"commandId\":\"LOOKUP\",\"commandContent\":{}}";
-    private static final int qos = 1;
-    private static final String topic = "T00000493012";
-    private static final String clientId = "PRODUCER_FOR_YUNBA";
+    private static final String SYSTEM_CLIENT_ID = "JMQTT_SYS";
 
-    public static void go(BrokerController brokerController){
-        System.out.println("go");
+/*    private static final String broker = "tcp://127.0.0.1:1883";
+    private static final String content = "{\"tranId\":\"3BB5666C81C747BFAAC558651D4954C\",\"commandId\":\"LOOKUP\",\"commandContent\":{}}";
+
+    private static final String topic = "T00000493012";
+    private static final String clientId = "PRODUCER_FOR_YUNBA";*/
+
+    public static void init(BrokerController brokerController){
+        logger.info("init yunba message util...");
 
         if(brokerController == null){
-            System.out.println("null");
+            logger.warn("brokerController is null");
         }
         messageDispatcher = brokerController.getMessageDispatcher();
         retainMessageStore = brokerController.getRetainMessageStore();
+    }
 
+    public static void pushMessage(String topic , String message , int qos){
         Message publishMessage = new Message();
         publishMessage.setMsgId(MessageUtil.generateMessageId());
-        publishMessage.setClientId(clientId);
+        publishMessage.setClientId(SYSTEM_CLIENT_ID);
         publishMessage.setType(Message.Type.PUBLISH);
-        publishMessage.setPayload(content.getBytes());
+        publishMessage.setPayload(message.getBytes());
 
         Map<String,Object> headers = new HashMap<>();
         headers.put(MessageHeader.TOPIC,topic);

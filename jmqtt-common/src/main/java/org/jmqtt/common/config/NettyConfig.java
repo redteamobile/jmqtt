@@ -23,19 +23,19 @@ public class NettyConfig {
     /**
      * websocket port default 1884
      */
-    private boolean startWebsocket = true;
+    private boolean startWebsocket = false;
     private int websocketPort = 1884;
 
     /**
      * tcp port with ssl default 8883
      */
-    private boolean startSslTcp = true;
+    private boolean startSslTcp = false;
     private int SslTcpPort = 8883;
 
     /**
      * websocket port with ssl default 8884
      */
-    private boolean startSslWebsocket = true;
+    private boolean startSslWebsocket = false;
     private int SslWebsocketPort = 8884;
 
     /**

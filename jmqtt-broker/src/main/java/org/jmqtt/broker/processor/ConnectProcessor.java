@@ -21,6 +21,7 @@ import org.jmqtt.group.protocol.ClusterResponseCode;
 import org.jmqtt.group.protocol.CommandConstant;
 import org.jmqtt.persistent.entity.Client;
 import org.jmqtt.persistent.service.ClientService;
+import org.jmqtt.persistent.utils.SpringUtil;
 import org.jmqtt.remoting.session.ClientSession;
 import org.jmqtt.common.bean.Message;
 import org.jmqtt.common.bean.MessageHeader;
@@ -40,10 +41,8 @@ import java.util.*;
 
 public class ConnectProcessor implements RequestProcessor {
 
-    @Autowired
-    private ClientService clientService;
-
     private static final Logger log = LoggerFactory.getLogger(LoggerName.CLIENT_TRACE);
+    private ClientService clientService;
 
     private FlowMessageStore flowMessageStore;
     private WillMessageStore willMessageStore;
@@ -65,7 +64,7 @@ public class ConnectProcessor implements RequestProcessor {
         this.reSendMessageService = brokerController.getReSendMessageService();
         this.subscriptionMatcher = brokerController.getSubscriptionMatcher();
         this.messageTransfer = brokerController.getInnerMessageTransfer();
-
+        this.clientService = SpringUtil.getBean(ClientService.class);
     }
 
     @Override

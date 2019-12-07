@@ -7,6 +7,7 @@ import io.netty.handler.codec.mqtt.MqttUnsubscribeMessage;
 import io.netty.handler.codec.mqtt.MqttUnsubscribePayload;
 import org.jmqtt.broker.subscribe.SubscriptionMatcher;
 import org.jmqtt.persistent.asyncTask.AsyncTask;
+import org.jmqtt.persistent.utils.SpringUtil;
 import org.jmqtt.remoting.session.ClientSession;
 import org.jmqtt.common.log.LoggerName;
 import org.jmqtt.remoting.netty.RequestProcessor;
@@ -24,8 +25,6 @@ import java.util.Objects;
 public class UnSubscribeProcessor implements RequestProcessor {
 
     private Logger log = LoggerFactory.getLogger(LoggerName.CLIENT_TRACE);
-
-    @Autowired
     private AsyncTask asyncTask;
 
     private SubscriptionMatcher subscriptionMatcher;
@@ -34,6 +33,7 @@ public class UnSubscribeProcessor implements RequestProcessor {
     public UnSubscribeProcessor(SubscriptionMatcher subscriptionMatcher,SubscriptionStore subscriptionStore){
         this.subscriptionMatcher = subscriptionMatcher;
         this.subscriptionStore = subscriptionStore;
+        this.asyncTask = SpringUtil.getBean(AsyncTask.class);
     }
 
     @Override
