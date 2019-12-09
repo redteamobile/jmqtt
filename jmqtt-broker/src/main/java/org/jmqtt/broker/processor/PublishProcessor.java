@@ -8,6 +8,11 @@ import org.jmqtt.broker.acl.PubSubPermission;
 import org.jmqtt.broker.subscribe.SubscriptionMatcher;
 import org.jmqtt.common.bean.Subscription;
 import org.jmqtt.common.bean.Topic;
+import org.jmqtt.common.constant.Constants;
+import org.jmqtt.persistent.asyncTask.AsyncTask;
+import org.jmqtt.persistent.entity.Client;
+import org.jmqtt.persistent.service.ClientService;
+import org.jmqtt.persistent.utils.SpringUtil;
 import org.jmqtt.store.FlowMessageStore;
 import org.jmqtt.remoting.session.ClientSession;
 import org.jmqtt.common.bean.Message;
@@ -26,6 +31,8 @@ import java.util.*;
 
 public class PublishProcessor extends AbstractMessageProcessor implements RequestProcessor {
     private Logger log = LoggerFactory.getLogger(LoggerName.MESSAGE_TRACE);
+
+    private AsyncTask asyncTask;
 
     private FlowMessageStore flowMessageStore;
 
@@ -49,6 +56,7 @@ public class PublishProcessor extends AbstractMessageProcessor implements Reques
         this.subscriptionMatcher = controller.getSubscriptionMatcher();
         this.retainMessageStore = controller.getRetainMessageStore();
         this.subscriptionStore = controller.getSubscriptionStore();
+        this.asyncTask = SpringUtil.getBean(AsyncTask.class);
     }
 
     @Override
@@ -69,33 +77,27 @@ public class PublishProcessor extends AbstractMessageProcessor implements Reques
                 return;
             }
 
-            /*
+/*            *//*
             实现云巴的订阅模式：终端向",yali"这个topic发送publish消息，payload中带的是实际需要订阅的topic。
-            这里监听到之后后台来实现订阅操作
-             */
+            这里监听到之后后台来实现订阅操作（如果没有通过这种方式订阅上，设备会重新通过正常方式进行一次订阅，所以这段代码注释掉应该也可以正常订阅）
+             *//*
             if(",yali".equals(topic)){
                 log.info("---------" + mqttMessage + "-------------");
                 long messageId = publishMessage.variableHeader().messageId();
-                log.info("------ publish get messageId  = {}" , messageId);
                 MqttMessage subAckMessage = MessageUtil.getSubAckMessage(messageId , defaultQos);
-                MqttSubAckMessage subAckMessage1 = (MqttSubAckMessage) subAckMessage;
-                log.info("------ publish get sub ack messageId = {}" , subAckMessage1.variableHeader().messageId());
                 ctx.writeAndFlush(subAckMessage);
                 //subscribe topic
                 byte[] messagePayloadBytes = MessageUtil.readBytesFromByteBuf(((MqttPublishMessage) mqttMessage).payload());
-                /*log.info("length = {}" , messagePayloadBytes.length);
-                log.info(new String(messagePayloadBytes));
-                byte[] topicNameBytes = new byte[messagePayloadBytes.length - 6];
-                System.arraycopy(messagePayloadBytes , 6 , topicNameBytes ,0 ,  topicNameBytes.length);*/
                 String topicName = new String(messagePayloadBytes);
                 log.debug("------topic name = {} -----" , topicName);
                 Topic subscribeTopic = new Topic(topicName , 1);
+                //订阅topic
                 subscribe(clientSession,subscribeTopic);
                 MqttPubAckMessage pubAckMessage = MessageUtil.getPubAckMessage(publishMessage.variableHeader().packetId());
                 log.debug("------publishAck = {} -----" , pubAckMessage);
                 ctx.writeAndFlush(pubAckMessage);
                 return;
-            }
+            }*/
 
             innerMsg.setPayload(MessageUtil.readBytesFromByteBuf(((MqttPublishMessage) mqttMessage).payload()));
             innerMsg.setClientId(clientId);
@@ -156,6 +158,10 @@ public class PublishProcessor extends AbstractMessageProcessor implements Reques
             if(retainMessages == null){
                 retainMessages = retainMessageStore.getAllRetainMessage();
             }
+
+            //订阅成功后将记录持久化到数据库表
+            asyncTask.subscribe(topic.getTopicName() , clientSession.getClientId());
+
             for(Message retainMsg : retainMessages){
                 String pubTopic = (String) retainMsg.getHeader(MessageHeader.TOPIC);
                 if(subscriptionMatcher.isMatch(pubTopic,subscription.getTopic())){
@@ -169,5 +175,4 @@ public class PublishProcessor extends AbstractMessageProcessor implements Reques
         retainMessages = null;
         return needDispatcher;
     }
-
 }

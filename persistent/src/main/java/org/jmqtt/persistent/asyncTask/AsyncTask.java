@@ -42,4 +42,10 @@ public class AsyncTask {
         clientService.disconnect(clientId);
     }
 
+    @Async("brokerAsyncPool")
+    public void connect(String clientId){
+        logger.info("client {} connect ..." , clientId);
+        clientService.connect(clientId);
+    }
+
 }

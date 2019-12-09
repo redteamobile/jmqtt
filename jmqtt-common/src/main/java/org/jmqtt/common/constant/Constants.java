@@ -6,6 +6,8 @@ package org.jmqtt.common.constant;
  */
 public class Constants {
 
-    public static final String CLIENT_TYPE = "DEVICE";
+    public static final String CLIENT_TYPE = "VSIM";
+
+    public static final String USERNAME = "redtea";
 
 }

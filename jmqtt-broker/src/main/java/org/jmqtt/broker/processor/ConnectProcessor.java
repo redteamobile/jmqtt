@@ -19,6 +19,7 @@ import org.jmqtt.group.protocol.ClusterRemotingCommand;
 import org.jmqtt.group.protocol.ClusterRequestCode;
 import org.jmqtt.group.protocol.ClusterResponseCode;
 import org.jmqtt.group.protocol.CommandConstant;
+import org.jmqtt.persistent.asyncTask.AsyncTask;
 import org.jmqtt.persistent.entity.Client;
 import org.jmqtt.persistent.service.ClientService;
 import org.jmqtt.persistent.utils.SpringUtil;
@@ -42,7 +43,7 @@ import java.util.*;
 public class ConnectProcessor implements RequestProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(LoggerName.CLIENT_TRACE);
-    private ClientService clientService;
+    private AsyncTask asyncTask;
 
     private FlowMessageStore flowMessageStore;
     private WillMessageStore willMessageStore;
@@ -64,7 +65,7 @@ public class ConnectProcessor implements RequestProcessor {
         this.reSendMessageService = brokerController.getReSendMessageService();
         this.subscriptionMatcher = brokerController.getSubscriptionMatcher();
         this.messageTransfer = brokerController.getInnerMessageTransfer();
-        this.clientService = SpringUtil.getBean(ClientService.class);
+        this.asyncTask = SpringUtil.getBean(AsyncTask.class);
     }
 
     @Override
@@ -138,18 +139,8 @@ public class ConnectProcessor implements RequestProcessor {
             }
             log.info("[CONNECT] -> {} connect to this mqtt server",clientId);
 
-            //将设备上线消息持久化到cthulhu
-            Client client = clientService.findByClientId(clientId);
-            if(client != null){
-                client.setStatus(true);
-                client.setLastConnectTime(new Date());
-            }else{
-                client = Client.builder()
-                        .clientId(clientId).username(userName).status(true).createTime(new Date())
-                        .lastConnectTime(new Date()).type(Constants.CLIENT_TYPE)
-                        .build();
-            }
-            clientService.save(client);
+            //持久化上线消息到数据库
+            asyncTask.connect(clientId);
 
             reConnect2SendMessage(clientId);
             newClientNotify(clientSession);
@@ -245,5 +236,4 @@ public class ConnectProcessor implements RequestProcessor {
         //适配云巴，所有版本号都返回true
         return true;
     }
-
 }

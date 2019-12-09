@@ -1,5 +1,6 @@
 package org.jmqtt.persistent.service;
 
+import org.jmqtt.common.constant.Constants;
 import org.jmqtt.persistent.dao.ClientDao;
 import org.jmqtt.persistent.entity.Client;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,20 @@ public class ClientService {
             client.setLastDisconnectTime(new Date());
             clientDao.save(client);
         }
+    }
+
+    //将设备上线消息持久化到cthulhu
+    public void connect(String clientId){
+        Client client = findByClientId(clientId);
+        if(client != null){
+            client.setStatus(true);
+            client.setLastConnectTime(new Date());
+        }else{
+            client = Client.builder()
+                    .clientId(clientId).username(Constants.USERNAME).status(true).createTime(new Date())
+                    .lastConnectTime(new Date()).type(Constants.CLIENT_TYPE)
+                    .build();
+        }
+        save(client);
     }
 }

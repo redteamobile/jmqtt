@@ -81,6 +81,7 @@ public class SubscribeProcessor implements RequestProcessor {
     }
 
     private List<Message> subscribe(ClientSession clientSession,List<Topic> validTopicList){
+        log.debug("-----subscribe method-----");
         Collection<Message> retainMessages = null;
         List<Message> needDispatcher = new ArrayList<>();
         for(Topic topic : validTopicList){
