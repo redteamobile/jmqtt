@@ -36,6 +36,7 @@ import org.jmqtt.remoting.netty.NettyRemotingServer;
 import org.jmqtt.remoting.netty.RequestProcessor;
 import org.jmqtt.store.*;
 import org.jmqtt.store.memory.DefaultMqttStore;
+import org.jmqtt.store.redis.RedisMqttStore;
 import org.jmqtt.store.rocksdb.RDBMqttStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -103,6 +104,8 @@ public class BrokerController {
                 case 1:
                     this.abstractMqttStore = new RDBMqttStore(storeConfig);
                     break;
+                case 2:
+                    this.abstractMqttStore = new RedisMqttStore(storeConfig);
                 default:
                     this.abstractMqttStore = new DefaultMqttStore();
                     break;

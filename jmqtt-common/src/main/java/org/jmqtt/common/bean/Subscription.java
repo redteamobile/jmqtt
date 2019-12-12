@@ -1,5 +1,7 @@
 package org.jmqtt.common.bean;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import java.util.Objects;
 
 public class Subscription {
@@ -35,6 +37,15 @@ public class Subscription {
 
     public void setTopic(String topic) {
         this.topic = topic;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("clientId", clientId)
+                .append("qos", qos)
+                .append("topic", topic)
+                .toString();
     }
 
     @Override

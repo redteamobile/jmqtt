@@ -44,7 +44,7 @@ public class YunbaMessageUtil {
         retainMessageStore = brokerController.getRetainMessageStore();
     }
 
-    public static void pushMessage(String topic , String message , int qos){
+    public static void pushMessage(String topic , String message , int qos , boolean retain){
         Message publishMessage = new Message();
         publishMessage.setMsgId(MessageUtil.generateMessageId());
         publishMessage.setClientId(SYSTEM_CLIENT_ID);
@@ -54,7 +54,7 @@ public class YunbaMessageUtil {
         Map<String,Object> headers = new HashMap<>();
         headers.put(MessageHeader.TOPIC,topic);
         headers.put(MessageHeader.QOS,qos);
-        headers.put(MessageHeader.RETAIN,false);
+        headers.put(MessageHeader.RETAIN,retain);
         headers.put(MessageHeader.DUP,false);
         publishMessage.setHeaders(headers);
         processMessage(publishMessage);

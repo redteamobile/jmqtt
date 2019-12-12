@@ -24,7 +24,6 @@ public class ControllerApplication {
         SpringApplication.run(ControllerApplication.class, args);
         //PersistentApplication.main(args);
         BrokerStartup.main(args);
-        SpringUtil.getBean(AsyncTask.class).disconnect("lthtest");
+        //SpringUtil.getBean(AsyncTask.class).disconnect("lthtest");
     }
-
 }

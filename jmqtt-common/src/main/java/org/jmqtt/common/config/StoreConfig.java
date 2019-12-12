@@ -9,7 +9,7 @@ public class StoreConfig {
     /**
      * store type default 1:rocksdb  2.redis  3.in memory
      */
-    private int storeType = 3;
+    private int storeType = 2;
 
 
     /* rocksdb store configuration start */
@@ -46,7 +46,7 @@ public class StoreConfig {
     }
 
     /*redis store configuration start */
-    private String nodes;
+    private String nodes = "localhost";
     private String password;
     private Integer maxIdle = 100;
     private Integer maxActive = 600;
