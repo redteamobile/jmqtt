@@ -1,6 +1,7 @@
 package org.jmqtt.persistent.asyncTask;
 
 import org.jmqtt.common.config.TaskTreadPoolConfig;
+import org.jmqtt.common.log.LoggerName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Configuration
 @EnableAsync
 public class TaskExecutePool {
-    private Logger logger = LoggerFactory.getLogger(TaskExecutePool.class);
+    private Logger logger = LoggerFactory.getLogger(LoggerName.APPLICATION);
 
     private TaskTreadPoolConfig config = new TaskTreadPoolConfig();
 

@@ -102,19 +102,23 @@ public class BrokerController {
         {//store pluggable
             switch (storeConfig.getStoreType()) {
                 case 1:
+                    log.info("JMQTT store type is rocksdb");
                     this.abstractMqttStore = new RDBMqttStore(storeConfig);
                     break;
                 case 2:
                     this.abstractMqttStore = new RedisMqttStore(storeConfig);
+                    log.info("JMQTT store type is redis");
+                    break;
                 default:
+                    log.info("JMQTT store type is in memory");
                     this.abstractMqttStore = new DefaultMqttStore();
                     break;
             }
             try {
                 this.abstractMqttStore.init();
             } catch (Exception e) {
-                System.out.println("Init Store failure,exception=" + e);
-                e.printStackTrace();
+                log.warn("Init Store failure,exception=" + e);
+                log.warn(e.getMessage());
             }
             this.flowMessageStore = this.abstractMqttStore.getFlowMessageStore();
             this.willMessageStore = this.abstractMqttStore.getWillMessageStore();

@@ -1,5 +1,6 @@
 package org.jmqtt.persistent.asyncTask;
 
+import org.jmqtt.common.log.LoggerName;
 import org.jmqtt.persistent.entity.TopicClient;
 import org.jmqtt.persistent.service.ClientService;
 import org.jmqtt.persistent.service.TopicClientService;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AsyncTask {
 
-    private static final Logger logger = LoggerFactory.getLogger(AsyncTask.class);
+    private static final Logger logger = LoggerFactory.getLogger(LoggerName.APPLICATION);
 
     @Autowired
     private TopicClientService topicClientService;

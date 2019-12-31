@@ -16,16 +16,16 @@
         <file>${user.home}/logs/jmqttlogs/store.log</file>
         <append>true</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-            <fileNamePattern>${user.home}/logs/jmqttlogs/otherdays/cluster.%i.log.gz</fileNamePattern>
-            <minIndex>1</minIndex>
-            <maxIndex>20</maxIndex>
+            <fileNamePattern>${user.home}/logs/jmqttlogs/otherdays/cluster-log-%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <maxHistory>30</maxHistory>
         </rollingPolicy>
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
             <maxFileSize>128MB</maxFileSize>
         </triggeringPolicy>
         <encoder>
-            <pattern>%d{yyy-MM-dd HH:mm:ss,GMT+8} %p %t - %m%n</pattern>
-            <charset class="java.nio.charset.Charset">UTF-8</charset>
+            <charset>utf-8</charset>
+            <Pattern>%date{yyyy-MM-dd HH:mm:ss} - [%level] - %logger - %message%n%xException
+            </Pattern>
         </encoder>
     </appender>
     <appender name="JmqttOtherAppender" class="ch.qos.logback.classic.AsyncAppender">
@@ -38,16 +38,16 @@
         <file>${user.home}/logs/jmqttlogs/store.log</file>
         <append>true</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-            <fileNamePattern>${user.home}/logs/jmqttlogs/otherdays/cluster.%i.log.gz</fileNamePattern>
-            <minIndex>1</minIndex>
-            <maxIndex>20</maxIndex>
+            <fileNamePattern>${user.home}/logs/jmqttlogs/otherdays/cluster-log-%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <maxHistory>30</maxHistory>
         </rollingPolicy>
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
             <maxFileSize>128MB</maxFileSize>
         </triggeringPolicy>
         <encoder>
-            <pattern>%d{yyy-MM-dd HH:mm:ss,GMT+8} %p %t - %m%n</pattern>
-            <charset class="java.nio.charset.Charset">UTF-8</charset>
+            <charset>utf-8</charset>
+            <Pattern>%date{yyyy-MM-dd HH:mm:ss} - [%level] - %logger - %message%n%xException
+            </Pattern>
         </encoder>
     </appender>
     <appender name="JmqttClusterAppender" class="ch.qos.logback.classic.AsyncAppender">
@@ -60,16 +60,16 @@
         <file>${user.home}/logs/jmqttlogs/store.log</file>
         <append>true</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-            <fileNamePattern>${user.home}/logs/jmqttlogs/otherdays/store.%i.log.gz</fileNamePattern>
-            <minIndex>1</minIndex>
-            <maxIndex>20</maxIndex>
+            <fileNamePattern>${user.home}/logs/jmqttlogs/otherdays/store-log-%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <maxHistory>30</maxHistory>
         </rollingPolicy>
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
             <maxFileSize>128MB</maxFileSize>
         </triggeringPolicy>
         <encoder>
-            <pattern>%d{yyy-MM-dd HH:mm:ss,GMT+8} %p %t - %m%n</pattern>
-            <charset class="java.nio.charset.Charset">UTF-8</charset>
+            <charset>utf-8</charset>
+            <Pattern>%date{yyyy-MM-dd HH:mm:ss} - [%level] - %logger - %message%n%xException
+            </Pattern>
         </encoder>
     </appender>
     <appender name="JmqttStoreAppender" class="ch.qos.logback.classic.AsyncAppender">
@@ -82,16 +82,16 @@
         <file>${user.home}/logs/jmqttlogs/remoting.log</file>
         <append>true</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-            <fileNamePattern>${user.home}/logs/jmqttlogs/otherdays/remoting.%i.log.gz</fileNamePattern>
-            <minIndex>1</minIndex>
-            <maxIndex>20</maxIndex>
+            <fileNamePattern>${user.home}/logs/jmqttlogs/otherdays/remoting-log-%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <maxHistory>30</maxHistory>
         </rollingPolicy>
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
             <maxFileSize>128MB</maxFileSize>
         </triggeringPolicy>
         <encoder>
-            <pattern>%d{yyy-MM-dd HH:mm:ss,GMT+8} %p %t - %m%n</pattern>
-            <charset class="java.nio.charset.Charset">UTF-8</charset>
+            <charset>utf-8</charset>
+            <Pattern>%date{yyyy-MM-dd HH:mm:ss} - [%level] - %logger - %message%n%xException
+            </Pattern>
         </encoder>
     </appender>
     <appender name="JmqttRemotingAppender" class="ch.qos.logback.classic.AsyncAppender">
@@ -104,16 +104,16 @@
         <file>${user.home}/logs/jmqttlogs/messageTrace.log</file>
         <append>true</append>
         <rollingPolicy class="ch.qos.logb-ack.core.rolling.FixedWindowRollingPolicy">
-            <fileNamePattern>${user.home}/logs/jmqttlogs/otherdays/messageTrace.%i.log.gz</fileNamePattern>
-            <minIndex>1</minIndex>
-            <maxIndex>20</maxIndex>
+            <fileNamePattern>${user.home}/logs/jmqttlogs/otherdays/messageTrace-log-%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <maxHistory>30</maxHistory>
         </rollingPolicy>
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
             <maxFileSize>128MB</maxFileSize>
         </triggeringPolicy>
         <encoder>
-            <pattern>%d{yyy-MM-dd HH:mm:ss,GMT+8} %p %t - %m%n</pattern>
-            <charset class="java.nio.charset.Charset">UTF-8</charset>
+            <charset>utf-8</charset>
+            <Pattern>%date{yyyy-MM-dd HH:mm:ss} - [%level] - %logger - %message%n%xException
+            </Pattern>
         </encoder>
     </appender>
     <appender name="JmqttMessageTraceAppender" class="ch.qos.logback.classic.AsyncAppender">
@@ -126,16 +126,16 @@
         <file>${user.home}/logs/jmqttlogs/broker.log</file>
         <append>true</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-            <fileNamePattern>${user.home}/logs/jmqttlogs/otherdays/broker.%i.log.gz</fileNamePattern>
-            <minIndex>1</minIndex>
-            <maxIndex>20</maxIndex>
+            <fileNamePattern>${user.home}/logs/jmqttlogs/otherdays/broker-log-%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <maxHistory>30</maxHistory>
         </rollingPolicy>
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
             <maxFileSize>128MB</maxFileSize>
         </triggeringPolicy>
         <encoder>
-            <pattern>%d{yyy-MM-dd HH:mm:ss,GMT+8} %p %t - %m%n</pattern>
-            <charset class="java.nio.charset.Charset">UTF-8</charset>
+            <charset>utf-8</charset>
+            <Pattern>%date{yyyy-MM-dd HH:mm:ss} - [%level] - %logger - %message%n%xException
+            </Pattern>
         </encoder>
     </appender>
     <appender name="JmqttBrokerAppender" class="ch.qos.logback.classic.AsyncAppender">
@@ -148,20 +148,42 @@
         <file>${user.home}/logs/jmqttlogs/clientTrace.log</file>
         <append>true</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-            <fileNamePattern>${user.home}/logs/jmqttlogs/otherdays/clientTrace.%i.log.gz</fileNamePattern>
-            <minIndex>1</minIndex>
-            <maxIndex>20</maxIndex>
+            <fileNamePattern>${user.home}/logs/jmqttlogs/otherdays/clientTrace-log-%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <maxHistory>30</maxHistory>
         </rollingPolicy>
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
             <maxFileSize>128MB</maxFileSize>
         </triggeringPolicy>
         <encoder>
-            <pattern>%d{yyy-MM-dd HH:mm:ss,GMT+8} %p %t - %m%n</pattern>
-            <charset class="java.nio.charset.Charset">UTF-8</charset>
+            <charset>utf-8</charset>
+            <Pattern>%date{yyyy-MM-dd HH:mm:ss} - [%level] - %logger - %message%n%xException
+            </Pattern>
         </encoder>
     </appender>
     <appender name="JmqttClientTraceAppender" class="ch.qos.logback.classic.AsyncAppender">
         <appender-ref ref="JmqttClientTraceAppender_inner"/>
+    </appender>
+
+    <!-- react.log -->
+    <appender name="JmqttReactAppender_inner"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${user.home}/logs/jmqttlogs/application.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>${user.home}/logs/jmqttlogs/otherdays/application-log-%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>128MB</maxFileSize>
+        </triggeringPolicy>
+        <encoder>
+            <charset>utf-8</charset>
+            <Pattern>%date{yyyy-MM-dd HH:mm:ss} - [%level] - %logger - %message%n%xException
+            </Pattern>
+        </encoder>
+    </appender>
+    <appender name="JmqttReactAppender" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="JmqttReactAppender_inner"/>
     </appender>
 
     <logger name="brokerLog" additivity="false">
@@ -206,8 +228,15 @@
         <appender-ref ref="STDOUT"/>
     </logger>
 
+    <logger name="applicationLog" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="JmqttReactAppender"/>
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
     <root>
-        <level value="DEBUG"/>
+        <level value="INFO"/>
+        <appender-ref ref="JmqttReactAppender"/>
         <appender-ref ref="STDOUT"/>
     </root>
 </configuration>

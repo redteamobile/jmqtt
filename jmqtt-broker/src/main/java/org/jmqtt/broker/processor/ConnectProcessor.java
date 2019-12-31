@@ -1,34 +1,29 @@
 package org.jmqtt.broker.processor;
 
-import com.sun.deploy.util.SessionState;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.internal.ChannelUtils;
-import io.netty.handler.codec.mqtt.*;
+import io.netty.handler.codec.mqtt.MqttConnAckMessage;
+import io.netty.handler.codec.mqtt.MqttConnectMessage;
+import io.netty.handler.codec.mqtt.MqttConnectReturnCode;
+import io.netty.handler.codec.mqtt.MqttMessage;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.jmqtt.broker.BrokerController;
 import org.jmqtt.broker.acl.ConnectPermission;
 import org.jmqtt.broker.dispatcher.InnerMessageTransfer;
 import org.jmqtt.broker.recover.ReSendMessageService;
 import org.jmqtt.broker.subscribe.SubscriptionMatcher;
-import org.jmqtt.common.constant.Constants;
-import org.jmqtt.common.helper.SerializeHelper;
-import org.jmqtt.group.common.ClusterNodeManager;
-import org.jmqtt.group.common.InvokeCallback;
-import org.jmqtt.group.common.ResponseFuture;
-import org.jmqtt.group.protocol.ClusterRemotingCommand;
-import org.jmqtt.group.protocol.ClusterRequestCode;
-import org.jmqtt.group.protocol.ClusterResponseCode;
-import org.jmqtt.group.protocol.CommandConstant;
-import org.jmqtt.persistent.asyncTask.AsyncTask;
-import org.jmqtt.persistent.entity.Client;
-import org.jmqtt.persistent.service.ClientService;
-import org.jmqtt.persistent.utils.SpringUtil;
-import org.jmqtt.remoting.session.ClientSession;
 import org.jmqtt.common.bean.Message;
 import org.jmqtt.common.bean.MessageHeader;
 import org.jmqtt.common.bean.Subscription;
+import org.jmqtt.common.helper.SerializeHelper;
 import org.jmqtt.common.log.LoggerName;
+import org.jmqtt.group.common.ClusterNodeManager;
+import org.jmqtt.group.protocol.ClusterRemotingCommand;
+import org.jmqtt.group.protocol.ClusterRequestCode;
+import org.jmqtt.group.protocol.CommandConstant;
+import org.jmqtt.persistent.asyncTask.AsyncTask;
+import org.jmqtt.persistent.utils.SpringUtil;
 import org.jmqtt.remoting.netty.RequestProcessor;
+import org.jmqtt.remoting.session.ClientSession;
 import org.jmqtt.remoting.session.ConnectManager;
 import org.jmqtt.remoting.util.MessageUtil;
 import org.jmqtt.remoting.util.NettyUtil;
@@ -36,9 +31,11 @@ import org.jmqtt.remoting.util.RemotingHelper;
 import org.jmqtt.store.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class ConnectProcessor implements RequestProcessor {
 
@@ -70,12 +67,11 @@ public class ConnectProcessor implements RequestProcessor {
 
     @Override
     public void processRequest(ChannelHandlerContext ctx, MqttMessage mqttMessage) {
-        log.info("-----Connect-----");
         MqttConnectMessage connectMessage = (MqttConnectMessage)mqttMessage;
-        log.info("Connect : {}" , mqttMessage);
+        String clientId = connectMessage.payload().clientIdentifier();
+        log.info("[CONNECT] client {} send connectMessage : {}" , clientId,  mqttMessage);
         MqttConnectReturnCode returnCode = null;
         int mqttVersion = connectMessage.variableHeader().version();
-        String clientId = connectMessage.payload().clientIdentifier();
         boolean cleansession = connectMessage.variableHeader().isCleanSession();
         String userName = connectMessage.payload().userName();
         byte[] password = connectMessage.payload().passwordInBytes();
@@ -128,10 +124,12 @@ public class ConnectProcessor implements RequestProcessor {
                 returnCode = MqttConnectReturnCode.CONNECTION_ACCEPTED;
                 NettyUtil.setClientId(ctx.channel(),clientId);
                 ConnectManager.getInstance().putClient(clientId,clientSession);
+                //connect消息合法，返回connectAck
+                MqttConnAckMessage ackMessage = MessageUtil.getConnectAckMessage(returnCode,sessionPresent);
+                log.info("[CONNECT] return connectAck {} to client {}" , ackMessage , clientId);
+                ctx.writeAndFlush(ackMessage);
             }
-            MqttConnAckMessage ackMessage = MessageUtil.getConnectAckMessage(returnCode,sessionPresent);
-            log.info("------connectAck ------ : {}" , ackMessage);
-            ctx.writeAndFlush(ackMessage);
+            //如果connect消息不合法，打印warn日志并且关闭通道
             if(returnCode != MqttConnectReturnCode.CONNECTION_ACCEPTED){
                 ctx.close();
                 log.warn("[CONNECT] -> {} connect failure,returnCode={}",clientId,returnCode);
@@ -181,7 +179,6 @@ public class ConnectProcessor implements RequestProcessor {
         headers.put(MessageHeader.TOPIC,willTopic);
         headers.put(MessageHeader.WILL,true);
         Message message = new Message(Message.Type.WILL,headers,willPayload);
-        //message.setMsgId("00000000");
         message.setClientId(clientId);
         willMessageStore.storeWillMessage(clientId,message);
         log.info("[WillMessageStore] : {} store will message:{}",clientId,message);

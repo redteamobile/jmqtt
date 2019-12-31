@@ -142,7 +142,10 @@ public class RocksdbStoreTest {
     public void testRedis(){
         System.out.println("-------------------测试redis实例创建-----------------");
         Jedis jedis = createJedis();
-        System.out.println("connect successful!");
+        System.out.println(jedis.get("test"));
+        System.out.println(jedis.keys("0000006670-000000171144*").size());
+        jedis.flushAll();
+        /*System.out.println("connect successful!");
         System.out.println("service running: "+jedis.ping());
         System.out.println("-------------------测试字符串-----------------");
         jedis.set("name", "ydfind");
@@ -163,7 +166,7 @@ public class RocksdbStoreTest {
         while(it.hasNext()){
             String key = it.next();
             System.out.println(key);
-        }
+        }*/
     }
 
     @Test
@@ -285,8 +288,14 @@ public class RocksdbStoreTest {
         //System.out.println(redisSubscriptionStore.getSubscriptions(clinetId1).size());
     }
 
+    @Test
     public void testRedisFlowMessageStore(){
-
+        RedisSubscriptionStore redisSubscriptionStore = new RedisSubscriptionStore(createJedis());
+        Collection<Subscription> collection = redisSubscriptionStore.getSubscriptions("0000006670-000000171144");
+        System.out.println(collection.size());
+        for (Subscription sub : collection) {
+            System.out.println(sub.getTopic());
+        }
     }
 
 }

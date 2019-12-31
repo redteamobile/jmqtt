@@ -61,14 +61,12 @@ public class PublishProcessor extends AbstractMessageProcessor implements Reques
 
     @Override
     public void processRequest(ChannelHandlerContext ctx, MqttMessage mqttMessage) {
-
-        log.info("---------------processRequest---------------");
-
         try{
             MqttPublishMessage publishMessage = (MqttPublishMessage) mqttMessage;
+            String clientId = NettyUtil.getClientId(ctx.channel());
+            log.info("[PubMessage] receive publish message {} from client {}" , publishMessage , clientId);
             MqttQoS qos = publishMessage.fixedHeader().qosLevel();
             Message innerMsg = new Message();
-            String clientId = NettyUtil.getClientId(ctx.channel());
             ClientSession clientSession = ConnectManager.getInstance().getClient(clientId);
             String topic = publishMessage.variableHeader().topicName();
             if(!this.pubSubPermission.publishVerfy(clientId,topic)){
@@ -76,28 +74,6 @@ public class PublishProcessor extends AbstractMessageProcessor implements Reques
                 clientSession.getCtx().close();
                 return;
             }
-
-/*            *//*
-            实现云巴的订阅模式：终端向",yali"这个topic发送publish消息，payload中带的是实际需要订阅的topic。
-            这里监听到之后后台来实现订阅操作（如果没有通过这种方式订阅上，设备会重新通过正常方式进行一次订阅，所以这段代码注释掉应该也可以正常订阅）
-             *//*
-            if(",yali".equals(topic)){
-                log.info("---------" + mqttMessage + "-------------");
-                long messageId = publishMessage.variableHeader().messageId();
-                MqttMessage subAckMessage = MessageUtil.getSubAckMessage(messageId , defaultQos);
-                ctx.writeAndFlush(subAckMessage);
-                //subscribe topic
-                byte[] messagePayloadBytes = MessageUtil.readBytesFromByteBuf(((MqttPublishMessage) mqttMessage).payload());
-                String topicName = new String(messagePayloadBytes);
-                log.debug("------topic name = {} -----" , topicName);
-                Topic subscribeTopic = new Topic(topicName , 1);
-                //订阅topic
-                subscribe(clientSession,subscribeTopic);
-                MqttPubAckMessage pubAckMessage = MessageUtil.getPubAckMessage(publishMessage.variableHeader().packetId());
-                log.debug("------publishAck = {} -----" , pubAckMessage);
-                ctx.writeAndFlush(pubAckMessage);
-                return;
-            }*/
 
             innerMsg.setPayload(MessageUtil.readBytesFromByteBuf(((MqttPublishMessage) mqttMessage).payload()));
             innerMsg.setClientId(clientId);
@@ -145,34 +121,5 @@ public class PublishProcessor extends AbstractMessageProcessor implements Reques
         log.debug("[PubMessage] -> Process qos1 message,clientId={}",innerMsg.getClientId());
         MqttPubAckMessage pubAckMessage = MessageUtil.getPubAckMessage(innerMsg.getMsgId());
         ctx.writeAndFlush(pubAckMessage);
-    }
-
-    //just for yunba
-    private List<Message> subscribe(ClientSession clientSession,Topic topic){
-        Collection<Message> retainMessages = null;
-        List<Message> needDispatcher = new ArrayList<>();
-        Subscription subscription = new Subscription(clientSession.getClientId(),topic.getTopicName(),topic.getQos());
-        log.info("---------clint {} subscribe topic to {}" , clientSession.getClientId() , topic.getTopicName());
-        boolean subRs = this.subscriptionMatcher.subscribe(subscription);
-        if(subRs){
-            if(retainMessages == null){
-                retainMessages = retainMessageStore.getAllRetainMessage();
-            }
-
-            //订阅成功后将记录持久化到数据库表
-            asyncTask.subscribe(topic.getTopicName() , clientSession.getClientId());
-
-            for(Message retainMsg : retainMessages){
-                String pubTopic = (String) retainMsg.getHeader(MessageHeader.TOPIC);
-                if(subscriptionMatcher.isMatch(pubTopic,subscription.getTopic())){
-                    int minQos = MessageUtil.getMinQos((int)retainMsg.getHeader(MessageHeader.QOS),topic.getQos());
-                    retainMsg.putHeader(MessageHeader.QOS,minQos);
-                    needDispatcher.add(retainMsg);
-                }
-            }
-            this.subscriptionStore.storeSubscription(clientSession.getClientId(),subscription);
-        }
-        retainMessages = null;
-        return needDispatcher;
     }
 }

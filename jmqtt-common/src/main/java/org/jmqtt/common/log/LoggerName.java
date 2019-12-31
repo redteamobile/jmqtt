@@ -14,4 +14,6 @@ public interface LoggerName {
     String CLUSTER = "clusterLog";
 
     String OTHER = "otherLog";
+
+    String APPLICATION = "applicationLog";
 }

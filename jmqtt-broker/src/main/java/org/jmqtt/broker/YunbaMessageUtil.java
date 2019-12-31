@@ -4,8 +4,13 @@ import org.jmqtt.broker.dispatcher.InnerMessageTransfer;
 import org.jmqtt.broker.dispatcher.MessageDispatcher;
 import org.jmqtt.common.bean.Message;
 import org.jmqtt.common.bean.MessageHeader;
+import org.jmqtt.common.helper.SerializeHelper;
+import org.jmqtt.common.log.LoggerName;
+import org.jmqtt.group.protocol.ClusterRemotingCommand;
+import org.jmqtt.group.protocol.ClusterRequestCode;
 import org.jmqtt.remoting.util.MessageUtil;
 import org.jmqtt.store.RetainMessageStore;
+import org.jmqtt.store.SessionStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +25,7 @@ import java.util.Map;
  */
 public class YunbaMessageUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(YunbaMessageUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(LoggerName.MESSAGE_TRACE);
 
     private static MessageDispatcher messageDispatcher;
     private static InnerMessageTransfer messageTransfer;
@@ -42,6 +47,11 @@ public class YunbaMessageUtil {
         }
         messageDispatcher = brokerController.getMessageDispatcher();
         retainMessageStore = brokerController.getRetainMessageStore();
+        messageTransfer = brokerController.getInnerMessageTransfer();
+    }
+
+    public static String getRetainMessage(String topic){
+        return retainMessageStore.getAllRetainMessage()
     }
 
     public static void pushMessage(String topic , String message , int qos , boolean retain){
@@ -74,7 +84,13 @@ public class YunbaMessageUtil {
                 retainMessageStore.storeRetainMessage(topic,message);
             }
         }
-        //暂时是单机版
-        //dispatcherMessage2Cluster(message);
+        dispatcherMessage2Cluster(message);
+    }
+
+    private static void dispatcherMessage2Cluster(Message message){
+        ClusterRemotingCommand remotingCommand = new ClusterRemotingCommand(ClusterRequestCode.SEND_MESSAGE);
+        byte[] body = SerializeHelper.serialize(message);
+        remotingCommand.setBody(body);
+        YunbaMessageUtil.messageTransfer.send2AllNodes(remotingCommand);
     }
 }

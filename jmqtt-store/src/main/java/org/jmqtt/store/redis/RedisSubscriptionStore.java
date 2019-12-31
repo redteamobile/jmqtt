@@ -4,7 +4,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.jmqtt.common.bean.Subscription;
 import org.jmqtt.common.bean.Topic;
 import org.jmqtt.common.helper.JsonObjectHelper;
+import org.jmqtt.common.log.LoggerName;
 import org.jmqtt.store.SubscriptionStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
 
 import java.util.ArrayList;
@@ -19,9 +22,13 @@ import java.util.Set;
  */
 public class RedisSubscriptionStore implements SubscriptionStore {
 
+    private static final Logger logger = LoggerFactory.getLogger(LoggerName.STORE);
+
+
     private Jedis jedis;
 
     public RedisSubscriptionStore(Jedis jedis){
+        logger.info("RedisSubscriptionStore init...");
         this.jedis = jedis;
     }
 

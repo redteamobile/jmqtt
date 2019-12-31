@@ -6,6 +6,7 @@ import org.jmqtt.common.bean.Message;
 import org.jmqtt.common.log.LoggerName;
 import org.jmqtt.remoting.netty.RequestProcessor;
 import org.jmqtt.remoting.util.MessageUtil;
+import org.jmqtt.remoting.util.NettyUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,9 +16,9 @@ public class PingProcessor implements RequestProcessor {
 
     @Override
     public void processRequest(ChannelHandlerContext ctx, MqttMessage mqttMessage) {
-        log.info("-----get ping package-----");
+        log.info("[PingMessage] get ping package from client {}" , NettyUtil.getClientId(ctx.channel()));
         MqttMessage pingRespMessage = MessageUtil.getPingRespMessage();
-        log.info("{}" , pingRespMessage);
+        log.info("[PingMessage] return ping resMessage {} to client {}" , pingRespMessage , NettyUtil.getClientId(ctx.channel()));
 
         ctx.writeAndFlush(pingRespMessage);
     }

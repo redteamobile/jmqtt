@@ -3,6 +3,7 @@ package org.jmqtt.store.redis;
 import org.apache.commons.lang3.StringUtils;
 import org.jmqtt.common.bean.Message;
 import org.jmqtt.common.helper.JsonObjectHelper;
+import org.jmqtt.common.log.LoggerName;
 import org.jmqtt.store.FlowMessageStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,12 +19,13 @@ import java.util.Set;
  */
 public class RedisFlowMessageStore implements FlowMessageStore {
 
-    private static final Logger logger = LoggerFactory.getLogger(RedisFlowMessageStore.class);
+    private static final Logger logger = LoggerFactory.getLogger(LoggerName.STORE);
 
     private Jedis jedis;
 
     public RedisFlowMessageStore(Jedis jedis){
         this.jedis = jedis;
+        logger.info("RedisFlowMessageStore init...");
     }
 
     @Override

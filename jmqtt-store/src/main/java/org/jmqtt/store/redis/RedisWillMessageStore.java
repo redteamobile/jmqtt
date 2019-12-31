@@ -2,7 +2,10 @@ package org.jmqtt.store.redis;
 
 import org.jmqtt.common.bean.Message;
 import org.jmqtt.common.helper.JsonObjectHelper;
+import org.jmqtt.common.log.LoggerName;
 import org.jmqtt.store.WillMessageStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
 
 /**
@@ -13,9 +16,13 @@ import redis.clients.jedis.Jedis;
  */
 public class RedisWillMessageStore implements WillMessageStore {
 
+    private static final Logger logger = LoggerFactory.getLogger(LoggerName.STORE);
+
+
     private Jedis jedis;
 
     public RedisWillMessageStore(Jedis jedis){
+        logger.info("RedisWillMessageStore init...");
         this.jedis = jedis;
     }
 
