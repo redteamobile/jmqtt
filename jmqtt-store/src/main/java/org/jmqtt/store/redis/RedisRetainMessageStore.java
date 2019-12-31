@@ -2,6 +2,7 @@ package org.jmqtt.store.redis;
 
 import org.jmqtt.common.bean.Message;
 import org.jmqtt.common.helper.JsonObjectHelper;
+import org.jmqtt.common.log.LoggerName;
 import org.jmqtt.store.RetainMessageStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +21,11 @@ import java.util.Set;
  */
 public class RedisRetainMessageStore implements RetainMessageStore {
 
-    private static final Logger logger = LoggerFactory.getLogger(RedisRetainMessageStore.class);
+    private static final Logger logger = LoggerFactory.getLogger(LoggerName.STORE);
     private Jedis jedis;
 
     public RedisRetainMessageStore(Jedis jedis){
+        logger.info("RedisRetainMessageStore init...");
         this.jedis = jedis;
     }
 

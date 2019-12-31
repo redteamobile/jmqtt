@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jmqtt.common.bean.Message;
 import org.jmqtt.common.helper.JsonObjectHelper;
 import org.jmqtt.common.helper.SerializeHelper;
+import org.jmqtt.common.log.LoggerName;
 import org.jmqtt.store.OfflineMessageStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,10 +26,11 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class RedisOfflineMessageStore implements OfflineMessageStore {
 
-    private static final Logger logger = LoggerFactory.getLogger(RedisOfflineMessageStore.class);
+    private static final Logger logger = LoggerFactory.getLogger(LoggerName.STORE);
     private Jedis jedis;
 
     public RedisOfflineMessageStore(Jedis jedis){
+        logger.info("RedisOfflineMessageStore init...");
         this.jedis = jedis;
     }
 

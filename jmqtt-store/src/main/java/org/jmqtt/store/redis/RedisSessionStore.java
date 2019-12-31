@@ -1,7 +1,10 @@
 package org.jmqtt.store.redis;
 
 import org.jmqtt.common.helper.JsonObjectHelper;
+import org.jmqtt.common.log.LoggerName;
 import org.jmqtt.store.SessionStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
 
 import java.util.Objects;
@@ -14,9 +17,13 @@ import java.util.Objects;
  */
 public class RedisSessionStore implements SessionStore {
 
+    private static final Logger logger = LoggerFactory.getLogger(LoggerName.STORE);
+
+
     private Jedis jedis;
 
     public RedisSessionStore(Jedis jedis){
+        logger.info("RedisSessionStore init...");
         this.jedis = jedis;
     }
 

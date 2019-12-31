@@ -1,8 +1,11 @@
 package org.jmqtt.store.redis;
 
 import org.jmqtt.common.config.StoreConfig;
+import org.jmqtt.common.log.LoggerName;
 import org.jmqtt.store.AbstractMqttStore;
 import org.jmqtt.store.memory.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
 
 /**
@@ -12,6 +15,8 @@ import redis.clients.jedis.Jedis;
  * @date 2019/12/10
  */
 public class RedisMqttStore extends AbstractMqttStore {
+
+    private static final Logger logger = LoggerFactory.getLogger(LoggerName.STORE);
 
     private Jedis jedis;
 
@@ -27,6 +32,7 @@ public class RedisMqttStore extends AbstractMqttStore {
 
     @Override
     public void init(){
+        logger.info("Redis Mqtt Store start to init...");
         this.flowMessageStore = new RedisFlowMessageStore(jedis);
         this.willMessageStore = new RedisWillMessageStore(jedis);
         this.retainMessageStore = new RedisRetainMessageStore(jedis);
@@ -37,6 +43,7 @@ public class RedisMqttStore extends AbstractMqttStore {
 
     @Override
     public void shutdown() {
-
+        jedis.close();
+        logger.info("Redis Mqtt Store shutdown");
     }
 }
