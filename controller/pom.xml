@@ -25,11 +25,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
@@ -47,13 +42,54 @@
         </dependency>
     </dependencies>
 
-    <build>
+    <profiles>
+        <profile>
+            <id>package-all</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.jmqtt</groupId>
+                    <artifactId>jmqtt-broker</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.jmqtt</groupId>
+                    <artifactId>jmqtt-common</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.jmqtt</groupId>
+                    <artifactId>jmqtt-remoting</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.jmqtt</groupId>
+                    <artifactId>jmqtt-store</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.jmqtt</groupId>
+                    <artifactId>jmqtt-group</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.jmqtt</groupId>
+                    <artifactId>persistent</artifactId>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+                <finalName>jmqtt</finalName>
+            </build>
+        </profile>
+    </profiles>
+
+    <!--<build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
-    </build>
+    </build>-->
 
 </project>

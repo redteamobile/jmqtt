@@ -1,8 +1,13 @@
 package org.jmqtt.common.config;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+
 import java.io.File;
 import java.util.ArrayList;
 
+@ConfigurationProperties(prefix = "store.config")
+@Configuration
 public class StoreConfig {
 
 
@@ -46,7 +51,7 @@ public class StoreConfig {
     }
 
     /*redis store configuration start */
-    private String nodes = "localhost";
+    private String nodes;
     private String password;
     private Integer maxIdle = 100;
     private Integer maxActive = 600;

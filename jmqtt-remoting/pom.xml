@@ -21,31 +21,30 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>in-project</id>
-            <name>In Project Repo</name>
-            <url>http://repo.redtea.io:8081/nexus/content/groups/public/</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>org.jmqtt</groupId>
             <artifactId>jmqtt-common</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.jmqtt</groupId>
             <artifactId>persistent</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.redteamobile.netty</groupId>
-            <artifactId>netty-all</artifactId>
-            <version>4.1.42.16.Final</version>
-        </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <classifier>exec</classifier>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 
 
 </project>

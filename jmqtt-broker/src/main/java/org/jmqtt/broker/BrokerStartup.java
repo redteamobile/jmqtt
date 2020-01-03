@@ -9,6 +9,8 @@ import org.jmqtt.common.config.ClusterConfig;
 import org.jmqtt.common.config.NettyConfig;
 import org.jmqtt.common.config.StoreConfig;
 import org.jmqtt.common.helper.MixAll;
+import org.jmqtt.persistent.utils.PropertiesUtils;
+import org.jmqtt.persistent.utils.SpringUtil;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
@@ -55,11 +57,20 @@ public class BrokerStartup {
         if(StringUtils.isEmpty(jmqttHome)){
             throw new Exception("please set JMQTT_HOME.");
         }
+
+        /*  JMQTT原有的日志体系，需要注释掉
         LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
         JoranConfigurator configurator = new JoranConfigurator();
         configurator.setContext(lc);
         lc.reset();
-        configurator.doConfigure(jmqttHome + "/conf/logback_broker.xml");
+        configurator.doConfigure(jmqttHome + "/conf/logback_broker.xml");*/
+
+        //把redis配置移植到springboot配置文件中
+        String redisNode = PropertiesUtils.getPropertiesValue("${spring.redis.host}");
+        if(redisNode != null){
+            storeConfig.setNodes(redisNode);
+            storeConfig.setPassword(PropertiesUtils.getPropertiesValue("${spring.redis.password}"));
+        }
 
         BrokerController brokerController = new BrokerController(brokerConfig,nettyConfig, storeConfig, clusterConfig);
         BrokerController.instance = brokerController;

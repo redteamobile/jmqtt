@@ -39,6 +39,8 @@
                 <include>org.jmqtt:jmqtt-common</include>
                 <include>org.jmqtt:jmqtt-store</include>
                 <include>org.jmqtt:jmqtt-group</include>
+                <include>org.jmqtt:controller</include>
+                <include>org.jmqtt:persistent</include>
             </includes>
             <binaries>
                 <outputDirectory>lib/</outputDirectory>

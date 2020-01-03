@@ -1,7 +1,10 @@
 package org.jmqtt.controller.controller;
 
 import org.jmqtt.broker.YunbaMessageUtil;
+import org.jmqtt.common.log.LoggerName;
 import org.jmqtt.controller.model.req.PublishReq;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +25,5 @@ public class PublishController {
         YunbaMessageUtil.pushMessage(request.getTopic() , request.getMessage() , request.getQos() , request.isRetain());
         return ResponseEntity.ok().build();
     }
-/*
-    @GetMapping("/retain")
-    public ResponseEntity retian(@RequestParam("topic") String topic){
-
-    }*/
 
 }

@@ -50,9 +50,6 @@ public class YunbaMessageUtil {
         messageTransfer = brokerController.getInnerMessageTransfer();
     }
 
-    public static String getRetainMessage(String topic){
-        return retainMessageStore.getAllRetainMessage()
-    }
 
     public static void pushMessage(String topic , String message , int qos , boolean retain){
         Message publishMessage = new Message();

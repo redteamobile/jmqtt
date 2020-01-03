@@ -20,8 +20,7 @@
         <module>jmqtt-remoting</module>
         <module>jmqtt-store</module>
         <module>jmqtt-common</module>
-        <module>jmqtt-distribution</module>
-        <module>jmqtt-example</module>
+       <!-- <module>jmqtt-distribution</module>-->
         <module>jmqtt-group</module>
         <module>persistent</module>
         <module>controller</module>
@@ -50,7 +49,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <netty.version>4.1.42.16.Final</netty.version>
+        <netty.version>4.1.42.Final</netty.version>
         <rocksdb.version>5.17.2</rocksdb.version>
         <fastjson.version>1.2.54</fastjson.version>
         <slf4j.version>1.7.25</slf4j.version>
@@ -102,6 +101,11 @@
                 <version>${version}</version>
             </dependency>
             <dependency>
+                <groupId>org.jmqtt</groupId>
+                <artifactId>controller</artifactId>
+                <version>${version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.rocksdb</groupId>
                 <artifactId>rocksdbjni</artifactId>
                 <version>${rocksdb.version}</version>
@@ -123,6 +127,12 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>1.5.8.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <version>1.5.8.RELEASE</version>
             <scope>test</scope>
@@ -134,13 +144,6 @@
             </exclusions>
         </dependency>
 
-<!--        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <version>1.5.8.RELEASE</version>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
@@ -192,26 +195,29 @@
         </dependency>
         <dependency>
             <groupId>com.redteamobile.netty</groupId>
-            <artifactId>netty-all</artifactId>
-            <version>${netty.version}</version>
+            <artifactId>netty-all-redtea</artifactId>
+            <version>4.1.42.Final</version>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
-            <plugin>
+            <!--<plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
                 <version>2.7</version>
                 <configuration>
                     <generateBackupPoms>false</generateBackupPoms>
                 </configuration>
-            </plugin>
+            </plugin>-->
 
-<!--            <plugin>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>-->
+                <configuration>
+                    <fork>true</fork>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

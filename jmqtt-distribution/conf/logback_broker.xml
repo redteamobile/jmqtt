@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<configuration>
-    <!--<property name="user.home" value="" />-->
+<!--<configuration>
+    &lt;!&ndash;<property name="user.home" value="" />&ndash;&gt;
 
-    <!-- console -->
+    &lt;!&ndash; console &ndash;&gt;
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} %-5level[%thread]%logger{56}.%method:%L -%msg%n</Pattern>
         </encoder>
     </appender>
 
-    <!-- other.log -->
+    &lt;!&ndash; other.log &ndash;&gt;
     <appender name="JmqttOtherAppender_inner"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${user.home}/logs/jmqttlogs/store.log</file>
@@ -32,7 +32,7 @@
         <appender-ref ref="JJmqttOtherAppender_inner"/>
     </appender>
 
-    <!-- cluster.log -->
+    &lt;!&ndash; cluster.log &ndash;&gt;
     <appender name="JmqttClusterAppender_inner"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${user.home}/logs/jmqttlogs/store.log</file>
@@ -54,7 +54,7 @@
         <appender-ref ref="JJmqttClusterAppender_inner"/>
     </appender>
 
-    <!-- store.log -->
+    &lt;!&ndash; store.log &ndash;&gt;
     <appender name="JmqttStoreAppender_inner"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${user.home}/logs/jmqttlogs/store.log</file>
@@ -76,7 +76,7 @@
         <appender-ref ref="JJmqttStoreAppender_inner"/>
     </appender>
 
-    <!-- remoting.log -->
+    &lt;!&ndash; remoting.log &ndash;&gt;
     <appender name="JmqttRemotingAppender_inner"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${user.home}/logs/jmqttlogs/remoting.log</file>
@@ -98,7 +98,7 @@
         <appender-ref ref="JmqttRemotingAppender_inner"/>
     </appender>
 
-    <!-- messageTrace.log -->
+    &lt;!&ndash; messageTrace.log &ndash;&gt;
     <appender name="JmqttMessageTraceAppender_inner"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${user.home}/logs/jmqttlogs/messageTrace.log</file>
@@ -120,7 +120,7 @@
         <appender-ref ref="JmqttMessageTraceAppender_inner"/>
     </appender>
 
-    <!-- broker.log -->
+    &lt;!&ndash; broker.log &ndash;&gt;
     <appender name="JmqttBrokerAppender_inner"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${user.home}/logs/jmqttlogs/broker.log</file>
@@ -142,7 +142,7 @@
         <appender-ref ref="JmqttBrokerAppender_inner"/>
     </appender>
 
-    <!-- clientTrace.log -->
+    &lt;!&ndash; clientTrace.log &ndash;&gt;
     <appender name="JmqttClientTraceAppender_inner"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${user.home}/logs/jmqttlogs/clientTrace.log</file>
@@ -164,7 +164,7 @@
         <appender-ref ref="JmqttClientTraceAppender_inner"/>
     </appender>
 
-    <!-- react.log -->
+    &lt;!&ndash; react.log &ndash;&gt;
     <appender name="JmqttReactAppender_inner"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${user.home}/logs/jmqttlogs/application.log</file>
@@ -239,4 +239,4 @@
         <appender-ref ref="JmqttReactAppender"/>
         <appender-ref ref="STDOUT"/>
     </root>
-</configuration>
+</configuration>-->

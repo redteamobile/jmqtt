@@ -5,7 +5,7 @@
     <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 
     <springProperty scope="context" name="logLevel" source="application.logging.level"
-                    defaultValue="INFO"/>
+                    defaultValue="DEBUG"/>
 
     <!-- The FILE and ASYNC appenders are here for 'online' profile -->
     <springProfile name="online">
@@ -40,10 +40,11 @@
         </appender>
     </springProfile>
 
+    <logger name="org.jmqtt.*" level="DEBUG"/>
+ <!--   <logger name="org.jmqtt.controller.controller.*" level="INFO"/>
+    <logger name="org.jmqtt.persistent.*" level="INFO"/>-->
 
-    <logger name="org.jmqtt.controller" level="${logLevel}"/>
-
-<!--    <logger name="ch.qos.logback" level="WARN"/>
+    <logger name="ch.qos.logback" level="WARN"/>
     <logger name="com.sun" level="WARN"/>
     <logger name="com.zaxxer" level="WARN"/>
     <logger name="org.jboss" level="WARN"/>
@@ -56,7 +57,7 @@
     <logger name="liquibase" level="INFO"/>
     <logger name="sun.rmi" level="WARN"/>
     <logger name="sun.net.www.protocol.http.HttpURLConnection" level="WARN"/>
-    <logger name="javax.activation" level="WARN"/>-->
+    <logger name="javax.activation" level="WARN"/>
 
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
         <resetJUL>true</resetJUL>

@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AsyncTask {
 
-    private static final Logger logger = LoggerFactory.getLogger(LoggerName.APPLICATION);
+    private static final Logger logger = LoggerFactory.getLogger(LoggerName.MESSAGE_TRACE);
 
     @Autowired
     private TopicClientService topicClientService;

@@ -4,7 +4,6 @@ import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
-import io.netty.handler.timeout.IdleStateHandler;
 import org.jmqtt.common.log.LoggerName;
 import org.jmqtt.persistent.asyncTask.AsyncTask;
 import org.jmqtt.persistent.utils.SpringUtil;
@@ -12,7 +11,6 @@ import org.jmqtt.remoting.util.NettyUtil;
 import org.jmqtt.remoting.util.RemotingHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class NettyConnectHandler extends ChannelDuplexHandler {
 

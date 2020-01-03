@@ -18,14 +18,6 @@
     </properties>
 
     <dependencies>
-       <!-- <dependency>
-            &lt;!&ndash; Import dependency management from Spring Boot &ndash;&gt;
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-dependencies</artifactId>
-            <version>1.5.8.RELEASE</version>
-            <type>pom</type>
-            <scope>import</scope>
-        </dependency>-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -41,74 +33,22 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <version>1.5.8.RELEASE</version>
-        </dependency>
-
-<!--        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <version>1.5.8.RELEASE</version>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <version>1.5.8.RELEASE</version>
             <optional>true</optional>
         </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.8</version>
         </dependency>
 
-        <!--<dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>3.1.0</version>
-        </dependency>-->
-
-<!--        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-        </dependency>-->
-
-        <!-- <dependency>
-             <groupId>org.projectlombok</groupId>
-             <artifactId>lombok</artifactId>
-             <optional>true</optional>
-         </dependency>-->
-        <!--<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <version>1.5.8.RELEASE</version>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.junit.vintage</groupId>
-                    <artifactId>junit-vintage-engine</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>-->
-
         <dependency>
             <groupId>org.jmqtt</groupId>
             <artifactId>jmqtt-common</artifactId>
         </dependency>
-        <!--<dependency>
-            <groupId>org.jmqtt</groupId>
-            <artifactId>jmqtt-remoting</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jmqtt</groupId>
-            <artifactId>jmqtt-store</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jmqtt</groupId>
-            <artifactId>jmqtt-group</artifactId>
-        </dependency>-->
+
     </dependencies>
 
     <build>
@@ -116,6 +56,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <classifier>exec</classifier>
+                </configuration>
             </plugin>
         </plugins>
     </build>

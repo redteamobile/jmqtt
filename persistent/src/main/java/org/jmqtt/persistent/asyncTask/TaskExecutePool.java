@@ -21,7 +21,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Configuration
 @EnableAsync
 public class TaskExecutePool {
-    private Logger logger = LoggerFactory.getLogger(LoggerName.APPLICATION);
+    private Logger logger = LoggerFactory.getLogger(LoggerName.BROKER);
 
     private TaskTreadPoolConfig config = new TaskTreadPoolConfig();
 

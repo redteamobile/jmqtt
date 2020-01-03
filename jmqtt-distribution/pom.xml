@@ -19,7 +19,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
-    <profiles>
+   <!-- <profiles>
         <profile>
             <id>package-all</id>
             <dependencies>
@@ -42,6 +42,14 @@
                 <dependency>
                     <groupId>org.jmqtt</groupId>
                     <artifactId>jmqtt-group</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.jmqtt</groupId>
+                    <artifactId>controller</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.jmqtt</groupId>
+                    <artifactId>persistent</artifactId>
                 </dependency>
             </dependencies>
             <build>
@@ -70,6 +78,6 @@
                 <finalName>jmqtt</finalName>
             </build>
         </profile>
-    </profiles>
+    </profiles>-->
 
 </project>
