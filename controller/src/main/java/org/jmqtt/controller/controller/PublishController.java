@@ -21,7 +21,7 @@ public class PublishController {
 
     @PostMapping("/publish")
     public ResponseEntity pubish(@Valid @RequestBody PublishReq request){
-        //TODO：qos暂时是不生效的，这里发送的都是0
+        System.out.println("getRequest" + request.toString());
         YunbaMessageUtil.pushMessage(request.getTopic() , request.getMessage() , request.getQos() , request.isRetain());
         return ResponseEntity.ok().build();
     }
