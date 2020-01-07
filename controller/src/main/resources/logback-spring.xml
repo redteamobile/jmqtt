@@ -11,10 +11,10 @@
     <springProfile name="online">
         <appender name="FILE"
                   class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>${user.home}/logs/jmqttlogs/application.log</file>
+            <file>logs/application.log</file>
             <rollingPolicy
                     class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                <fileNamePattern>${user.home}/logs/jmqttlogs/application-log-%d{yyyy-MM-dd}.gz
+                <fileNamePattern>logs/application-log-%d{yyyy-MM-dd}.gz
                 </fileNamePattern>
                 <maxHistory>30</maxHistory>
             </rollingPolicy>
