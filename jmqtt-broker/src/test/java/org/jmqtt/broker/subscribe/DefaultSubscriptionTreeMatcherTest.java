@@ -1,6 +1,5 @@
 package org.jmqtt.broker.subscribe;
 
-import javafx.application.Application;
 import org.jmqtt.common.bean.Subscription;
 import org.jmqtt.persistent.asyncTask.AsyncTask;
 import org.jmqtt.persistent.utils.SpringUtil;
@@ -10,7 +9,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashSet;
