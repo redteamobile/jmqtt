@@ -32,12 +32,12 @@ public class BrokerStartup {
         StoreConfig storeConfig = new StoreConfig();
         ClusterConfig clusterConfig =new ClusterConfig();
 
-        //把redis配置移植到springboot配置文件中
+    /*    //把redis配置移植到springboot配置文件中
         String redisNode = PropertiesUtils.getPropertiesValue("${spring.redis.host}");
         if(redisNode != null){
             storeConfig.setNodes(redisNode);
             storeConfig.setPassword(PropertiesUtils.getPropertiesValue("${spring.redis.password}"));
-        }
+        }*/
 
         BrokerController brokerController = new BrokerController(brokerConfig,nettyConfig, storeConfig, clusterConfig);
         BrokerController.instance = brokerController;
