@@ -1,3 +1,4 @@
+/*
 package org.jmqtt.persistent.service;
 
 import org.jmqtt.persistent.dao.ClientDao;
@@ -9,10 +10,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+*/
 /**
  * @author Alex Liu
  * @date 2019/12/06
- */
+ *//*
+
 
 @Service
 public class TopicClientService {
@@ -44,3 +47,4 @@ public class TopicClientService {
         }
     }
 }
+*/

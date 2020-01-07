@@ -15,12 +15,9 @@ import java.util.Date;
  * @author Alex Liu
  * @date 2019/12/06
  */
-@Entity
 @Data
 @Builder
 public class TopicClient {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;//no comment
     private String username;
     private String topic;//no comment

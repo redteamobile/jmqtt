@@ -14,7 +14,7 @@ public class StoreConfig {
     /**
      * store type default 1:rocksdb  2.redis  3.in memory
      */
-    private int storeType = 2;
+    private int storeType = 3;
 
 
     /* rocksdb store configuration start */

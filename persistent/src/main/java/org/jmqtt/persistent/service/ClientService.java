@@ -1,3 +1,4 @@
+/*
 package org.jmqtt.persistent.service;
 
 import org.jmqtt.common.constant.Constants;
@@ -8,10 +9,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+*/
 /**
  * @author Alex Liu
  * @date 2019/12/05
- */
+ *//*
+
 @Service
 public class ClientService {
 
@@ -50,3 +53,4 @@ public class ClientService {
         save(client);
     }
 }
+*/
