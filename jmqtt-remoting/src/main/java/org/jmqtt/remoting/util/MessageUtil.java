@@ -15,17 +15,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class MessageUtil {
 
-    private static transient AtomicInteger messageIdCounter = new AtomicInteger(1234);
-
-    public static long generateMessageId(){
-        int low = messageIdCounter.getAndIncrement();
-        int high = messageIdCounter.getAndIncrement();
-        long messageId = ((long)low & 0xFFFFFFFFl) | (((long)high << 32) & 0xFFFFFFFF00000000l);
-
-        return messageId;
-    }
-
-
     public static byte[] readBytesFromByteBuf(ByteBuf byteBuf){
         byte[] bytes = new byte[byteBuf.readableBytes()];
         byteBuf.readBytes(bytes);
@@ -33,13 +22,13 @@ public class MessageUtil {
     }
 
 
-    public static MqttUnsubAckMessage getUnSubAckMessage(long messageId){
+    public static MqttUnsubAckMessage getUnSubAckMessage(int messageId){
         MqttFixedHeader fixedHeader = new MqttFixedHeader(MqttMessageType.UNSUBACK,false,MqttQoS.AT_MOST_ONCE,false,0);
         MqttMessageIdVariableHeader idVariableHeader = MqttMessageIdVariableHeader.from(messageId);
         return new MqttUnsubAckMessage(fixedHeader,idVariableHeader);
     }
 
-    public static long getMessageId(MqttMessage mqttMessage){
+    public static int getMessageId(MqttMessage mqttMessage){
         MqttMessageIdVariableHeader idVariableHeader = (MqttMessageIdVariableHeader) mqttMessage.variableHeader();
         return idVariableHeader.messageId();
     }
@@ -51,13 +40,13 @@ public class MessageUtil {
         return qos2;
     }
 
-    public static MqttMessage getPubRelMessage(long messageId){
+    public static MqttMessage getPubRelMessage(int messageId){
         MqttFixedHeader fixedHeader = new MqttFixedHeader(MqttMessageType.PUBREL,false,MqttQoS.AT_MOST_ONCE,false,0);
         MqttMessageIdVariableHeader idVariableHeader = MqttMessageIdVariableHeader.from(messageId);
         return new MqttMessage(fixedHeader,idVariableHeader);
     }
 
-    public static MqttPublishMessage getPubMessage(Message message,boolean dup,int qos,long messageId){
+    public static MqttPublishMessage getPubMessage(Message message,boolean dup,int qos,int messageId){
         MqttFixedHeader fixedHeader = new MqttFixedHeader(MqttMessageType.PUBLISH,dup,MqttQoS.valueOf(qos),false,0);
         MqttPublishVariableHeader publishVariableHeader = new MqttPublishVariableHeader((String) message.getHeader(MessageHeader.TOPIC),messageId);
         ByteBuf heapBuf;
@@ -69,10 +58,9 @@ public class MessageUtil {
         return new MqttPublishMessage(fixedHeader,publishVariableHeader,heapBuf);
     }
 
-    public static MqttMessage getSubAckMessage(long messageId, List<Integer> qos){
+    public static MqttMessage getSubAckMessage(int messageId, List<Integer> qos){
         MqttFixedHeader fixedHeader = new MqttFixedHeader(MqttMessageType.SUBACK,false,MqttQoS.AT_MOST_ONCE,false,0);
         MqttMessageIdVariableHeader idVariableHeader = MqttMessageIdVariableHeader.from(messageId);
-        System.out.println("subackMessageId = " + messageId);
         MqttSubAckPayload subAckPayload = new MqttSubAckPayload(qos);
         return new MqttSubAckMessage(fixedHeader,idVariableHeader,subAckPayload);
     }
@@ -83,19 +71,19 @@ public class MessageUtil {
         return mqttMessage;
     }
 
-    public static MqttMessage getPubComMessage(long messageId){
+    public static MqttMessage getPubComMessage(int messageId){
         MqttFixedHeader fixedHeader = new MqttFixedHeader(MqttMessageType.PUBCOMP,false,MqttQoS.AT_MOST_ONCE,false,0);
         MqttMessage mqttMessage = new MqttMessage(fixedHeader,MqttMessageIdVariableHeader.from(messageId));
         return mqttMessage;
     }
 
-    public static MqttMessage getPubRecMessage(long messageId){
+    public static MqttMessage getPubRecMessage(int messageId){
         MqttFixedHeader fixedHeader = new MqttFixedHeader(MqttMessageType.PUBREC,false,MqttQoS.AT_MOST_ONCE,false,0);
         MqttMessage mqttMessage = new MqttMessage(fixedHeader,MqttMessageIdVariableHeader.from(messageId));
         return mqttMessage;
     }
 
-    public static MqttPubAckMessage getPubAckMessage(long messageId){
+    public static MqttPubAckMessage getPubAckMessage(int messageId){
         MqttFixedHeader fixedHeader = new MqttFixedHeader(MqttMessageType.PUBACK,false,MqttQoS.AT_MOST_ONCE,false,0);
         MqttMessageIdVariableHeader idVariableHeader = MqttMessageIdVariableHeader.from(messageId);
         return new MqttPubAckMessage(fixedHeader,idVariableHeader);

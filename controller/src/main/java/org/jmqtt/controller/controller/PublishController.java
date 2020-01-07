@@ -1,3 +1,4 @@
+/*
 package org.jmqtt.controller.controller;
 
 import org.jmqtt.broker.YunbaMessageUtil;
@@ -11,10 +12,12 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+*/
 /**
  * @author Alex Liu
  * @date 2019/12/07
- */
+ *//*
+
 @RestController
 @RequestMapping("/api/v1")
 public class PublishController {
@@ -27,3 +30,4 @@ public class PublishController {
     }
 
 }
+*/

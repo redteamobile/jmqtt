@@ -174,10 +174,10 @@ public class RocksdbStoreTest {
         RedisOfflineMessageStore redisOfflineMessageStore = new RedisOfflineMessageStore(createJedis());
         String clinetId = "TestClientID";
         Message message1 = new Message();
-        message1.setMsgId(1L);
+        message1.setMsgId(1);
         message1.setClientId("111");
         Message message2 = new Message();
-        message2.setMsgId(2L);
+        message2.setMsgId(2);
         message2.setClientId("222");
         redisOfflineMessageStore.addOfflineMessage(clinetId , message1);
         redisOfflineMessageStore.addOfflineMessage(clinetId , message2);
@@ -207,9 +207,9 @@ public class RocksdbStoreTest {
         String topic1 = "12345678901";
         String topic2 = "12345678902";
         Message message1 = new Message();
-        message1.setMsgId(1L);
+        message1.setMsgId(1);
         Message message2 = new Message();
-        message2.setMsgId(2L);
+        message2.setMsgId(2);
         redisRetainMessageStore.storeRetainMessage(topic1 , message1);
         redisRetainMessageStore.storeRetainMessage(topic2 , message2);
 
@@ -236,10 +236,10 @@ public class RocksdbStoreTest {
         RedisWillMessageStore redisWillMessageStore = new RedisWillMessageStore(createJedis());
         String clinetId = "TestClientID";
         Message message1 = new Message();
-        message1.setMsgId(1L);
+        message1.setMsgId(1);
         message1.setClientId("111");
         Message message2 = new Message();
-        message2.setMsgId(2L);
+        message2.setMsgId(2);
         message2.setClientId("222");
         redisWillMessageStore.storeWillMessage(clinetId  , message1);
         //System.out.println(redisWillMessageStore.getWillMessage(clinetId));

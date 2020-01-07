@@ -56,7 +56,7 @@ public class SubscribeProcessor implements RequestProcessor {
         log.info("------------subscribe message----------------");
 
         String clientId = NettyUtil.getClientId(ctx.channel());
-        long messageId = subscribeMessage.variableHeader().messageId();
+        int messageId = subscribeMessage.variableHeader().messageId();
         ClientSession clientSession = ConnectManager.getInstance().getClient(clientId);
         List<Topic> validTopicList =validTopics(clientSession,subscribeMessage.payload().topicSubscriptions());
         if(validTopicList == null || validTopicList.size() == 0){

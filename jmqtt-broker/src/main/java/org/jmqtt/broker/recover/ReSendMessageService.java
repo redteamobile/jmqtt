@@ -75,7 +75,7 @@ public class ReSendMessageService {
             return false;
         }
         int qos = (int) message.getHeader(MessageHeader.QOS);
-        long messageId = message.getMsgId();
+        int messageId = message.getMsgId();
         if(qos > 0){
             flowMessageStore.cacheSendMsg(clientId,message);
         }

@@ -16,7 +16,7 @@ public class BrokerStartup {
     public static void main(String[] args) {
         try {
             BrokerController brokerController = start(args);
-            YunbaMessageUtil.init(brokerController);
+            //YunbaMessageUtil.init(brokerController);
         } catch (Exception e) {
             logger.error("Jmqtt start failure,cause = " + e);
             logger.error(e.getMessage());

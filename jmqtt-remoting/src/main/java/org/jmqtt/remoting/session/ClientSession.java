@@ -51,11 +51,12 @@ public class ClientSession {
         this.ctx = ctx;
     }
 
-    public long generateMessageId(){
-        int low = messageIdCounter.getAndIncrement();
-        int high = messageIdCounter.getAndIncrement();
-        long messageId = ((long)low & 0xFFFFFFFFl) | (((long)high << 32) & 0xFFFFFFFF00000000l);
-
+    public int generateMessageId(){
+        int messageId = messageIdCounter.getAndIncrement();
+        messageId = Math.abs( messageId % 0xFFFF);
+        if(messageId == 0){
+            return generateMessageId();
+        }
         return messageId;
     }
 

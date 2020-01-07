@@ -126,7 +126,7 @@ public class DefaultDispatcherMessage implements MessageDispatcher {
                             ClientSession clientSession = ConnectManager.getInstance().getClient(subscription.getClientId());
                             if (ConnectManager.getInstance().containClient(clientId)) {
                                 int qos = MessageUtil.getMinQos((int) message.getHeader(MessageHeader.QOS), subscription.getQos());
-                                long messageId = clientSession.generateMessageId();
+                                int messageId = clientSession.generateMessageId();
                                 message.putHeader(MessageHeader.QOS, qos);
                                 message.setMsgId(messageId);
                                 if (qos > 0) {

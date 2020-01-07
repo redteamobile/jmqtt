@@ -1,3 +1,4 @@
+/*
 package org.jmqtt.broker;
 
 import org.jmqtt.broker.dispatcher.InnerMessageTransfer;
@@ -17,12 +18,14 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+*/
 /**
  * 用于向broker推送符合yunba协议的mqtt消息
  *
  * @author Alex Liu
  * @date 2019/11/13
- */
+ *//*
+
 public class YunbaMessageUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(LoggerName.MESSAGE_TRACE);
@@ -33,11 +36,13 @@ public class YunbaMessageUtil {
 
     private static final String SYSTEM_CLIENT_ID = "JMQTT_SYS";
 
+*/
 /*    private static final String broker = "tcp://127.0.0.1:1883";
     private static final String content = "{\"tranId\":\"3BB5666C81C747BFAAC558651D4954C\",\"commandId\":\"LOOKUP\",\"commandContent\":{}}";
 
     private static final String topic = "T00000493012";
-    private static final String clientId = "PRODUCER_FOR_YUNBA";*/
+    private static final String clientId = "PRODUCER_FOR_YUNBA";*//*
+
 
     public static void init(BrokerController brokerController){
         logger.info("init yunba message util...");
@@ -91,3 +96,4 @@ public class YunbaMessageUtil {
         YunbaMessageUtil.messageTransfer.send2AllNodes(remotingCommand);
     }
 }
+*/
