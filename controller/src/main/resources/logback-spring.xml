@@ -8,7 +8,7 @@
                     defaultValue="DEBUG"/>
 
     <!-- The FILE and ASYNC appenders are here for 'online' profile -->
-    <springProfile name="online">
+    <!--<springProfile name="online">-->
         <appender name="FILE"
                   class="ch.qos.logback.core.rolling.RollingFileAppender">
             <file>logs/application.log</file>
@@ -25,11 +25,11 @@
             </encoder>
         </appender>
 
-        <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+      <!--  <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
             <queueSize>512</queueSize>
             <appender-ref ref="FILE"/>
-        </appender>
-    </springProfile>
+        </appender>-->
+<!--    </springProfile>-->
 
     <springProfile name="docker">
         <appender name="DOCKER_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
