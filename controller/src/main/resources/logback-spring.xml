@@ -8,7 +8,7 @@
                     defaultValue="DEBUG"/>
 
     <!-- The FILE and ASYNC appenders are here for 'online' profile -->
-    <springProfile name="online">
+
         <appender name="FILE"
                   class="ch.qos.logback.core.rolling.RollingFileAppender">
             <file>logs/application.log</file>
@@ -29,7 +29,6 @@
             <queueSize>512</queueSize>
             <appender-ref ref="FILE"/>
         </appender>
-    </springProfile>
 
     <springProfile name="docker">
         <appender name="DOCKER_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
@@ -40,7 +39,7 @@
         </appender>
     </springProfile>
 
-    <logger name="org.jmqtt.*" level="DEBUG"/>
+    <logger name="org.jmqtt.*" level="INFO"/>
  <!--   <logger name="org.jmqtt.controller.controller.*" level="INFO"/>
     <logger name="org.jmqtt.persistent.*" level="INFO"/>-->
 
@@ -73,6 +72,7 @@
         <springProfile name="online">
             <appender-ref ref="FILE"/>
         </springProfile>
+        <appender-ref ref="FILE"/>
     </root>
 
 </configuration>
