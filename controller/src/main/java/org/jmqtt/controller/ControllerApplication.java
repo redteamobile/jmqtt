@@ -18,10 +18,17 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableAsync
 public class ControllerApplication {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
         SpringApplication.run(ControllerApplication.class, args);
         BrokerStartup.main(args);
-        SpringUtil.getBean(PresentService.class).connect("89023022000010000000000001555428");
+        /*PresentService presentService = SpringUtil.getBean(PresentService.class);
+        presentService.connect("89023022000010000000000001555428");
+        Thread.sleep(1000);
+        presentService.subscribe("89023022000010000000000001555428","89023022000010000000000001555429");
+        Thread.sleep(2000);
+        presentService.unsubscribe("89023022000010000000000001555428" , "89023022000010000000000001555429");
+        Thread.sleep(1000);
+        presentService.disconnect("89023022000010000000000001555428" , "closed");*/
         /*TestUtils testUtils = new TestUtils();
         try {
             testUtils.pressureUtil(1);

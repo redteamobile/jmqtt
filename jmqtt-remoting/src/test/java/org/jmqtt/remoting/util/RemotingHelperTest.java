@@ -25,7 +25,5 @@ public class RemotingHelperTest {
 
     @Test
     public void test(){
-        AsyncTask asyncTask = SpringUtil.getBean(AsyncTask.class);
-        asyncTask.disconnect("lthtest");
     }
 }

@@ -4,6 +4,7 @@ import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
+import org.jmqtt.common.enums.DisconnectReason;
 import org.jmqtt.common.log.LoggerName;
 import org.jmqtt.persistent.asyncTask.AsyncTask;
 import org.jmqtt.persistent.utils.SpringUtil;
@@ -38,7 +39,7 @@ public class NettyConnectHandler extends ChannelDuplexHandler {
         log.debug("[ChannelInactive] -> addr = {}",remoteAddr);
         this.eventExcutor.putNettyEvent(new NettyEvent(remoteAddr,NettyEventType.CLOSE,ctx.channel()));
         String clientId = NettyUtil.getClientId(ctx.channel());
-        asyncTask.disconnect(clientId);
+        asyncTask.disconnect(clientId , DisconnectReason.IDLETIMEOUT.toString());
     }
 
     @Override

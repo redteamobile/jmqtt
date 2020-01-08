@@ -4,6 +4,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.mqtt.MqttMessage;
 import org.jmqtt.broker.BrokerController;
 import org.jmqtt.broker.subscribe.SubscriptionMatcher;
+import org.jmqtt.common.enums.DisconnectReason;
 import org.jmqtt.persistent.asyncTask.AsyncTask;
 import org.jmqtt.persistent.utils.SpringUtil;
 import org.jmqtt.remoting.session.ClientSession;
@@ -49,7 +50,7 @@ public class DisconnectProcessor implements RequestProcessor {
         clearSubscriptions(clientSession);
         clearWillMessage(clientSession.getClientId());
         ConnectManager.getInstance().removeClient(clientId);
-        asyncTask.disconnect(clientId);
+        asyncTask.disconnect(clientId , DisconnectReason.CLOSED.toString());
         ctx.close();
     }
 

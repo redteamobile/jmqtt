@@ -51,8 +51,7 @@ public class DefaultSubscriptionTreeMatcherTest {
 
     @Test
     public void testGet(){
-        AsyncTask asyncTask = SpringUtil.getBean(AsyncTask.class);
-        asyncTask.disconnect("lthtest");
+
     }
 
     @Test

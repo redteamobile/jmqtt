@@ -19,13 +19,13 @@ import java.util.List;
 public class PresentToCthulhuReq implements Serializable {
     private String action;//no comment
     @JsonProperty("client_id")
-    private String clientId;//no comment
+    private String client_id;//no comment
     @NotBlank
     private String username;//no comment
     private String messageId;//no comment
     private String topic;//no comment
     @JsonProperty("conn_ack")
-    private String connAck;//no comment
+    private String conn_ack;//no comment
     private String reason;//no comment
     @JsonProperty("from_client_id")
     private String fromClientId;//no comment
@@ -64,11 +64,11 @@ public class PresentToCthulhuReq implements Serializable {
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("action", action)
-                .add("clientId", clientId)
+                .add("clientId", client_id)
                 .add("username", username)
                 .add("messageId", messageId)
                 .add("topic", topic)
-                .add("connAck", connAck)
+                .add("connAck", conn_ack)
                 .add("reason", reason)
                 .add("fromClientId", fromClientId)
                 .add("fromUsername", fromUsername)
@@ -138,12 +138,15 @@ public class PresentToCthulhuReq implements Serializable {
         return this.action;
     }
 
-    public PresentToCthulhuReq setClientId(String clientId) {
-        this.clientId = clientId == null ? null : clientId.trim();
+    @JsonProperty("client_id")
+    public PresentToCthulhuReq setClientId(String client_id) {
+        this.client_id = client_id == null ? null : client_id.trim();
         return this;
     }
+
+    @JsonProperty("client_id")
     public String getClientId() {
-        return this.clientId;
+        return this.client_id;
     }
 
     public PresentToCthulhuReq setUsername(String username) {
@@ -171,11 +174,11 @@ public class PresentToCthulhuReq implements Serializable {
     }
 
     public PresentToCthulhuReq setConnAck(String connAck) {
-        this.connAck = connAck == null ? null : connAck.trim();
+        this.conn_ack = connAck == null ? null : connAck.trim();
         return this;
     }
     public String getConnAck() {
-        return this.connAck;
+        return this.conn_ack;
     }
 
     public PresentToCthulhuReq setReason(String reason) {

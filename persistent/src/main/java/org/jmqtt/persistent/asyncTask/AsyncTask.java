@@ -1,8 +1,10 @@
 package org.jmqtt.persistent.asyncTask;
 
 import org.jmqtt.common.log.LoggerName;
+import org.jmqtt.persistent.service.PresentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -15,33 +17,31 @@ public class AsyncTask {
 
     private static final Logger logger = LoggerFactory.getLogger(LoggerName.MESSAGE_TRACE);
 
-  /*  @Autowired
-    private TopicClientService topicClientService;
     @Autowired
-    private ClientService clientService;*/
+    private PresentService presentService;
 
     @Async("brokerAsyncPool")
     public void subscribe(String topic , String clientId){
         logger.info("start to subscribe TopicClient...");
-        //topicClientService.subscribe(topic , clientId);
+        presentService.subscribe(topic , clientId);
     }
 
     @Async("brokerAsyncPool")
     public void unsubscribe(String topic , String clientId){
         logger.info("start to unsubscribe TopicClient...");
-        //topicClientService.unsubscribe(topic , clientId);
+        presentService.unsubscribe(topic , clientId);
     }
 
     @Async("brokerAsyncPool")
-    public void disconnect(String clientId){
+    public void disconnect(String clientId , String reason){
         logger.info("client {} disconnect ..." , clientId);
-        //clientService.disconnect(clientId);
+        presentService.disconnect(clientId , reason);
     }
 
     @Async("brokerAsyncPool")
     public void connect(String clientId){
         logger.info("client {} connect ..." , clientId);
-        //clientService.connect(clientId);
+        presentService.connect(clientId);
     }
 
 }
