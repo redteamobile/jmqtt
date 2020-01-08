@@ -16,7 +16,7 @@ public class TestUtils {
 
     private static IdGenerator idGenerator = new AlternativeJdkIdGenerator();
 
-    private static final String broker = "tcp://127.0.0.1:1883";
+    private static final String broker = "tcp://107.150.119.156:1883";
     private static final String topic = "MQTT/+";
 
     public void pressureUtil(int num) throws Exception{
