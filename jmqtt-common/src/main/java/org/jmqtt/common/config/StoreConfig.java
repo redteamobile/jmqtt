@@ -1,12 +1,12 @@
 package org.jmqtt.common.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.File;
 import java.util.ArrayList;
 
-@ConfigurationProperties(prefix = "store.config")
 @Configuration
 public class StoreConfig {
 
@@ -14,8 +14,7 @@ public class StoreConfig {
     /**
      * store type default 1:rocksdb  2.redis  3.in memory
      */
-    private int storeType = 3;
-
+    private int storeType ;
 
     /* rocksdb store configuration start */
     private String rocksDbPath = System.getProperty("user.home",System.getenv("user.home"))+ File.separator + "rocksdb";
@@ -51,7 +50,9 @@ public class StoreConfig {
     }
 
     /*redis store configuration start */
+    @Value("${spring.redis.host}")
     private String nodes;
+    @Value("${spring.redis.password}")
     private String password;
     private Integer maxIdle = 100;
     private Integer maxActive = 600;

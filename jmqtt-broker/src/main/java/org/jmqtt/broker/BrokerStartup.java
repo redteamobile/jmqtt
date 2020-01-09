@@ -6,8 +6,10 @@ import org.jmqtt.common.config.NettyConfig;
 import org.jmqtt.common.config.StoreConfig;
 import org.jmqtt.common.log.LoggerName;
 import org.jmqtt.persistent.utils.PropertiesUtils;
+import org.jmqtt.persistent.utils.SpringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 public class BrokerStartup {
 
@@ -16,7 +18,7 @@ public class BrokerStartup {
     public static void main(String[] args) {
         try {
             BrokerController brokerController = start(args);
-            //YunbaMessageUtil.init(brokerController);
+            YunbaMessageUtil.init(brokerController);
         } catch (Exception e) {
             logger.error("Jmqtt start failure,cause = " + e);
             logger.error(e.getMessage());
@@ -29,18 +31,14 @@ public class BrokerStartup {
 
         BrokerConfig brokerConfig = new BrokerConfig();
         NettyConfig nettyConfig = new NettyConfig();
+
         StoreConfig storeConfig = new StoreConfig();
+        setStoreConfig(storeConfig);
+
+        //TODO：后续这个也改成配置文件配置
         ClusterConfig clusterConfig =new ClusterConfig();
 
-    /*    //把redis配置移植到springboot配置文件中
-        String redisNode = PropertiesUtils.getPropertiesValue("${spring.redis.host}");
-        if(redisNode != null){
-            storeConfig.setNodes(redisNode);
-            storeConfig.setPassword(PropertiesUtils.getPropertiesValue("${spring.redis.password}"));
-        }*/
-
         BrokerController brokerController = new BrokerController(brokerConfig,nettyConfig, storeConfig, clusterConfig);
-        BrokerController.instance = brokerController;
         brokerController.start();
 
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
@@ -51,6 +49,14 @@ public class BrokerStartup {
         }));
 
         return brokerController;
+    }
+
+    private static void setStoreConfig(StoreConfig storeConfig){
+        storeConfig.setStoreType(Integer.valueOf(PropertiesUtils.getPropertiesValue("${store.type}")));
+        if(storeConfig.getStoreType() == 2){
+            storeConfig.setNodes(PropertiesUtils.getPropertiesValue("${spring.redis.host}"));
+            storeConfig.setPassword(PropertiesUtils.getPropertiesValue("${spring.redis.password}"));
+        }
     }
 
 }

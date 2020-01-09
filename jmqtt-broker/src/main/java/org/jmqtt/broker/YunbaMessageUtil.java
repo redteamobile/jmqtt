@@ -1,4 +1,3 @@
-/*
 package org.jmqtt.broker;
 
 import org.jmqtt.broker.dispatcher.InnerMessageTransfer;
@@ -9,22 +8,13 @@ import org.jmqtt.common.helper.SerializeHelper;
 import org.jmqtt.common.log.LoggerName;
 import org.jmqtt.group.protocol.ClusterRemotingCommand;
 import org.jmqtt.group.protocol.ClusterRequestCode;
-import org.jmqtt.remoting.util.MessageUtil;
 import org.jmqtt.store.RetainMessageStore;
-import org.jmqtt.store.SessionStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
-*/
-/**
- * 用于向broker推送符合yunba协议的mqtt消息
- *
- * @author Alex Liu
- * @date 2019/11/13
- *//*
 
 public class YunbaMessageUtil {
 
@@ -36,12 +26,11 @@ public class YunbaMessageUtil {
 
     private static final String SYSTEM_CLIENT_ID = "JMQTT_SYS";
 
-*/
-/*    private static final String broker = "tcp://127.0.0.1:1883";
+    private static final String broker = "tcp://127.0.0.1:1883";
     private static final String content = "{\"tranId\":\"3BB5666C81C747BFAAC558651D4954C\",\"commandId\":\"LOOKUP\",\"commandContent\":{}}";
 
     private static final String topic = "T00000493012";
-    private static final String clientId = "PRODUCER_FOR_YUNBA";*//*
+    private static final String clientId = "PRODUCER_FOR_YUNBA";
 
 
     public static void init(BrokerController brokerController){
@@ -58,7 +47,8 @@ public class YunbaMessageUtil {
 
     public static void pushMessage(String topic , String message , int qos , boolean retain){
         Message publishMessage = new Message();
-        publishMessage.setMsgId(MessageUtil.generateMessageId());
+        //设置大一点避免冲突
+        publishMessage.setMsgId(generateMessageId());
         publishMessage.setClientId(SYSTEM_CLIENT_ID);
         publishMessage.setType(Message.Type.PUBLISH);
         publishMessage.setPayload(message.getBytes());
@@ -70,6 +60,12 @@ public class YunbaMessageUtil {
         headers.put(MessageHeader.DUP,false);
         publishMessage.setHeaders(headers);
         processMessage(publishMessage);
+    }
+
+    private static int generateMessageId(){
+        //使用当前时间对999取余，避免连续推送多条消息时messageId重复。对取余结果加上基数1000，避免与现有的messageId重复
+        int result = new Long(System.currentTimeMillis()).intValue() % 999 + 1000;
+        return result;
     }
 
     protected static void processMessage(Message message){
@@ -96,4 +92,3 @@ public class YunbaMessageUtil {
         YunbaMessageUtil.messageTransfer.send2AllNodes(remotingCommand);
     }
 }
-*/

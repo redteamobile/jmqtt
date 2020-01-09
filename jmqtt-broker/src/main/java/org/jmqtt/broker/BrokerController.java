@@ -50,8 +50,6 @@ public class BrokerController {
 
     private static final Logger log = LoggerFactory.getLogger(LoggerName.BROKER);
 
-    public static BrokerController instance = null;
-
     private BrokerConfig brokerConfig;
     private NettyConfig nettyConfig;
     private StoreConfig storeConfig;
@@ -186,8 +184,6 @@ public class BrokerController {
                 new LinkedBlockingQueue<>(10000),
                 new ThreadFactoryImpl("ClusterThread"),
                 new RejectHandler("sub", 100000));
-
-        BrokerController.instance = this;
 
     }
 
@@ -375,7 +371,4 @@ public class BrokerController {
         return clusterService;
     }
 
-    public static BrokerController getInstance(){
-        return instance;
-    }
 }

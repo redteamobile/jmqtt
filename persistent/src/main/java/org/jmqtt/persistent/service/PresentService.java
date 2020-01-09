@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class PresentService {
 
-    private Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-
     private static final String CLIENT_DISCONNECTED= "client_disconnected";
     private static final String CLIENT_CONNECTED = "client_connected";
     public final static String CLIENT_SUBSCRIBE = "client_subscribe";
