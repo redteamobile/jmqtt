@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * @date 2020/01/08
  */
 @Service
-public class PresentService {
+public class PresenceService {
 
     private static final String CLIENT_DISCONNECTED= "client_disconnected";
     private static final String CLIENT_CONNECTED = "client_connected";

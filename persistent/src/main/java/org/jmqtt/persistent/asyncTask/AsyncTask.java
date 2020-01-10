@@ -1,7 +1,7 @@
 package org.jmqtt.persistent.asyncTask;
 
 import org.jmqtt.common.log.LoggerName;
-import org.jmqtt.persistent.service.PresentService;
+import org.jmqtt.persistent.service.PresenceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,30 +18,30 @@ public class AsyncTask {
     private static final Logger logger = LoggerFactory.getLogger(LoggerName.MESSAGE_TRACE);
 
     @Autowired
-    private PresentService presentService;
+    private PresenceService presenceService;
 
     @Async("brokerAsyncPool")
     public void subscribe(String topic , String clientId){
         logger.info("start to subscribe TopicClient...");
-        presentService.subscribe(topic , clientId);
+        presenceService.subscribe(topic , clientId);
     }
 
     @Async("brokerAsyncPool")
     public void unsubscribe(String topic , String clientId){
         logger.info("start to unsubscribe TopicClient...");
-        presentService.unsubscribe(topic , clientId);
+        presenceService.unsubscribe(topic , clientId);
     }
 
     @Async("brokerAsyncPool")
     public void disconnect(String clientId , String reason){
         logger.info("client {} disconnect ..." , clientId);
-        presentService.disconnect(clientId , reason);
+        presenceService.disconnect(clientId , reason);
     }
 
     @Async("brokerAsyncPool")
     public void connect(String clientId){
         logger.info("client {} connect ..." , clientId);
-        presentService.connect(clientId);
+        presenceService.connect(clientId);
     }
 
 }
