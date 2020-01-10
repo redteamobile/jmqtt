@@ -15,7 +15,7 @@ import javax.validation.Valid;
 public class PublishController {
 
     @PostMapping("/publish")
-    public ResponseEntity pubish(@Valid @RequestBody PublishReq request){
+    public ResponseEntity publish(@Valid @RequestBody PublishReq request){
         YunbaMessageUtil.pushMessage(request.getTopic() , request.getMessage() , request.getQos() , request.isRetain());
         return ResponseEntity.ok().build();
     }
