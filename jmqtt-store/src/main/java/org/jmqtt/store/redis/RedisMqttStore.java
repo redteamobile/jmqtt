@@ -1,16 +1,11 @@
 package org.jmqtt.store.redis;
 
-import org.jmqtt.common.config.StoreConfig;
 import org.jmqtt.common.log.LoggerName;
 import org.jmqtt.persistent.utils.SpringUtil;
 import org.jmqtt.store.AbstractMqttStore;
-import org.jmqtt.store.memory.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
 
 /**
  * 基于redis的MQTT数据存储
