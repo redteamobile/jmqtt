@@ -19,8 +19,8 @@ public class RedisConfig {
     private Logger logger = LoggerFactory.getLogger(RedisConfig.class);
 
     @Bean
-    public RedisTemplate<String, Integer> redisTemplate(RedisConnectionFactory factory) {
-        RedisTemplate<String, Integer> template = new RedisTemplate<String, Integer>();
+    public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {
+        RedisTemplate<String, String> template = new RedisTemplate<String, String>();
         template.setConnectionFactory(factory);
         template.setKeySerializer(new StringRedisSerializer());
         template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
