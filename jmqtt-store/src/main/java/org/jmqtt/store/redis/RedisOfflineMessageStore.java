@@ -1,22 +1,17 @@
 package org.jmqtt.store.redis;
 
-import com.alibaba.fastjson.JSONObject;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jmqtt.common.bean.Message;
 import org.jmqtt.common.helper.JsonObjectHelper;
-import org.jmqtt.common.helper.SerializeHelper;
 import org.jmqtt.common.log.LoggerName;
 import org.jmqtt.store.OfflineMessageStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import redis.clients.jedis.Jedis;
+import org.springframework.data.redis.core.RedisTemplate;
 
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * 数据存入格式为<prefix + clientID + MessageId , message.jsonStr>
@@ -27,24 +22,25 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class RedisOfflineMessageStore implements OfflineMessageStore {
 
     private static final Logger logger = LoggerFactory.getLogger(LoggerName.STORE);
-    private Jedis jedis;
-
-    public RedisOfflineMessageStore(Jedis jedis){
+    
+    private RedisTemplate<String , String> redisTemplate;
+    
+    public RedisOfflineMessageStore(RedisTemplate<String , String> redisTemplate){
         logger.info("RedisOfflineMessageStore init...");
-        this.jedis = jedis;
+        this.redisTemplate = redisTemplate;
     }
 
     @Override
     public void clearOfflineMsgCache(String clientId) {
-        Set<String> keys = this.jedis.keys(prefixAndClinetId(clientId + "*"));
+        Set<String> keys = this.redisTemplate.keys(prefixAndClinetId(clientId + "*"));
         for (String key : keys) {
-            this.jedis.del(key);
+            this.redisTemplate.delete(key);
         }
     }
 
     @Override
     public boolean containOfflineMsg(String clientId) {
-        Set<String> keys = this.jedis.keys(prefixAndClinetId(clientId + "*"));
+        Set<String> keys = this.redisTemplate.keys(prefixAndClinetId(clientId + "*"));
         if(keys == null || keys.size() == 0){
             return false;
         }
@@ -54,16 +50,16 @@ public class RedisOfflineMessageStore implements OfflineMessageStore {
     @Override
     public boolean addOfflineMessage(String clientId, Message message) {
         String key = prefixAndClinetIdAndMessageId(clientId , message.getMsgId());
-        this.jedis.set(key , JsonObjectHelper.objectToJsonString(message));
+        this.redisTemplate.opsForValue().set(key , JsonObjectHelper.objectToJsonString(message));
         return true;
     }
 
     @Override
     public Collection<Message> getAllOfflineMessage(String clientId) {
-        Set<String> keys = this.jedis.keys(prefixAndClinetId(clientId + "*"));
+        Set<String> keys = this.redisTemplate.keys(prefixAndClinetId(clientId + "*"));
         Collection<Message> messages = new ArrayList<>();
         for (String key : keys) {
-            String messageString = this.jedis.get(key);
+            String messageString = this.redisTemplate.opsForValue().get(key);
             //判断是否为空，防止有其他线程删除了这条记录
             if(StringUtils.isEmpty(messageString)){
                 continue;

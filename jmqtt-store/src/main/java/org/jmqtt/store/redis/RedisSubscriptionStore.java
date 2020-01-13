@@ -8,6 +8,7 @@ import org.jmqtt.common.log.LoggerName;
 import org.jmqtt.store.SubscriptionStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import redis.clients.jedis.Jedis;
 
 import java.util.ArrayList;
@@ -24,26 +25,25 @@ public class RedisSubscriptionStore implements SubscriptionStore {
 
     private static final Logger logger = LoggerFactory.getLogger(LoggerName.STORE);
 
+    private RedisTemplate<String , String> redisTemplate;
 
-    private Jedis jedis;
-
-    public RedisSubscriptionStore(Jedis jedis){
+    public RedisSubscriptionStore(RedisTemplate<String , String> redisTemplate){
         logger.info("RedisSubscriptionStore init...");
-        this.jedis = jedis;
+        this.redisTemplate = redisTemplate;
     }
 
     @Override
     public boolean storeSubscription(String clientId, Subscription subscription) {
-        jedis.set(prefixAndClinetIdAndTopic(clientId , subscription.getTopic()) , JsonObjectHelper.objectToJsonString(subscription));
+        redisTemplate.opsForValue().set(prefixAndClinetIdAndTopic(clientId , subscription.getTopic()) , JsonObjectHelper.objectToJsonString(subscription));
         return true;
     }
 
     @Override
     public Collection<Subscription> getSubscriptions(String clientId) {
-        Set<String> keys = jedis.keys(prefixAndClinetIdAndTopic(clientId , "*"));
+        Set<String> keys = redisTemplate.keys(prefixAndClinetIdAndTopic(clientId , "*"));
         Collection<Subscription> subscriptions = new ArrayList<>();
         for (String key:keys) {
-            String subscriptionString = jedis.get(key);
+            String subscriptionString = redisTemplate.opsForValue().get(key);
             if(StringUtils.isEmpty(subscriptionString)){
                 continue;
             }
@@ -55,16 +55,16 @@ public class RedisSubscriptionStore implements SubscriptionStore {
 
     @Override
     public boolean clearSubscription(String clientId) {
-        Set<String> keys = jedis.keys(prefixAndClinetIdAndTopic(clientId , "*"));
+        Set<String> keys = redisTemplate.keys(prefixAndClinetIdAndTopic(clientId , "*"));
         for (String key:keys) {
-            jedis.del(key);
+            redisTemplate.delete(key);
         }
         return true;
     }
 
     @Override
     public boolean removeSubscription(String clientId, String topic) {
-        jedis.del(prefixAndClinetIdAndTopic(clientId , topic));
+        redisTemplate.delete(prefixAndClinetIdAndTopic(clientId , topic));
         return true;
     }
 

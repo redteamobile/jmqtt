@@ -169,7 +169,7 @@ public class RocksdbStoreTest {
         }*/
     }
 
-    @Test
+    /*@Test
     public void testRedisOfflineMessageStore(){
         RedisOfflineMessageStore redisOfflineMessageStore = new RedisOfflineMessageStore(createJedis());
         String clinetId = "TestClientID";
@@ -188,20 +188,20 @@ public class RocksdbStoreTest {
 
         Assert.assertTrue(collection.size() == 2);
 
-/*        for (Message msg : collection) {
+*//*        for (Message msg : collection) {
             //((JSONObject) msg).parseObject(((JSONObject) msg).getString(), Message.class);
             //Message msg1 = JSONObject.parseObject(JSONObject.toJSONString(msg) , Message.class);
             System.out.println(msg);
-        }*/
+        }*//*
 
         redisOfflineMessageStore.clearOfflineMsgCache(clinetId);
         Collection<Message> collectionAfterClear = redisOfflineMessageStore.getAllOfflineMessage(clinetId);
         Assert.assertTrue(collectionAfterClear == null || collectionAfterClear.size() == 0);
 
 
-    }
+    }*/
 
-    @Test
+  /*  @Test
     public void testRedisRatainMessageStore(){
         RedisRetainMessageStore redisRetainMessageStore = new RedisRetainMessageStore(createJedis());
         String topic1 = "12345678901";
@@ -216,22 +216,22 @@ public class RocksdbStoreTest {
         Collection<Message> collection = redisRetainMessageStore.getAllRetainMessage();
         Assert.assertTrue(collection.size() == 2);
 
-       /* for (Message msg : collection) {
+       *//* for (Message msg : collection) {
             System.out.println(msg);
-        }*/
+        }*//*
 
         redisRetainMessageStore.removeRetainMessage(topic1);
 
         Collection<Message> collectionAfterDelete = redisRetainMessageStore.getAllRetainMessage();
         Assert.assertTrue(collectionAfterDelete.size() == 1);
 
-        /*for (Message msg : collectionAfterDelete) {
+        *//*for (Message msg : collectionAfterDelete) {
             System.out.println(msg);
-        }*/
+        }*//*
 
-    }
+    }*/
 
-    @Test
+/*    @Test
     public void testRedisWillMessageStore(){
         RedisWillMessageStore redisWillMessageStore = new RedisWillMessageStore(createJedis());
         String clinetId = "TestClientID";
@@ -271,17 +271,17 @@ public class RocksdbStoreTest {
         Collection<Subscription> collection = redisSubscriptionStore.getSubscriptions(clinetId1);
         Assert.assertTrue(collection.size() == 3);
 
-        /*for (Subscription sub : collection) {
+        *//*for (Subscription sub : collection) {
             System.out.println(sub);
-        }*/
+        }*//*
 
         redisSubscriptionStore.removeSubscription(clinetId1 , topic1);
         Collection<Subscription> collectionAfterRemove = redisSubscriptionStore.getSubscriptions(clinetId1);
         Assert.assertTrue(collectionAfterRemove.size() == 2);
 
-        /*for (Subscription sub : collectionAfterRemove) {
+        *//*for (Subscription sub : collectionAfterRemove) {
             System.out.println(sub);
-        }*/
+        }*//*
 
         redisSubscriptionStore.clearSubscription(clinetId1);
         Assert.assertTrue(redisSubscriptionStore.getSubscriptions(clinetId1).size() == 0);
@@ -296,6 +296,6 @@ public class RocksdbStoreTest {
         for (Subscription sub : collection) {
             System.out.println(sub.getTopic());
         }
-    }
+    }*/
 
 }

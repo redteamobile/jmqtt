@@ -7,7 +7,7 @@ import org.jmqtt.common.log.LoggerName;
 import org.jmqtt.store.FlowMessageStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import redis.clients.jedis.Jedis;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,22 +21,22 @@ public class RedisFlowMessageStore implements FlowMessageStore {
 
     private static final Logger logger = LoggerFactory.getLogger(LoggerName.STORE);
 
-    private Jedis jedis;
+    private RedisTemplate<String , String> redisTemplate;
 
-    public RedisFlowMessageStore(Jedis jedis){
-        this.jedis = jedis;
+    public RedisFlowMessageStore(RedisTemplate<String , String> redisTemplate){
+        this.redisTemplate = redisTemplate;
         logger.info("RedisFlowMessageStore init...");
     }
 
     @Override
     public void clearClientFlowCache(String clientId){
-        this.jedis.del(sendPrefixAndClientId(clientId));
-        this.jedis.del(recPrefixAndClientId(clientId));
+        this.redisTemplate.delete(sendPrefixAndClientId(clientId));
+        this.redisTemplate.delete(recPrefixAndClientId(clientId));
     }
 
     @Override
     public Message getRecMsg(String clientId, long msgId){
-        String recMsgJsonStr = this.jedis.get(recPrefixAndClientIdAndMsgId(clientId , msgId));
+        String recMsgJsonStr = redisTemplate.opsForValue().get(recPrefixAndClientIdAndMsgId(clientId , msgId));
         if(StringUtils.isEmpty(recMsgJsonStr)){
             return null;
         }
@@ -45,7 +45,7 @@ public class RedisFlowMessageStore implements FlowMessageStore {
 
     @Override
     public boolean cacheRecMsg(String clientId,Message message){
-        this.jedis.set(recPrefixAndClientIdAndMsgId(clientId , message.getMsgId()) , JsonObjectHelper.objectToJsonString(message));
+        redisTemplate.opsForValue().set(recPrefixAndClientIdAndMsgId(clientId , message.getMsgId()) , JsonObjectHelper.objectToJsonString(message));
         return true;
     }
 
@@ -56,22 +56,22 @@ public class RedisFlowMessageStore implements FlowMessageStore {
             logger.warn("The message is not exist,clientId={},msgId={}",clientId,msgId);
             return message;
         }
-        this.jedis.del(recPrefixAndClientIdAndMsgId(clientId , msgId));
+        this.redisTemplate.delete(recPrefixAndClientIdAndMsgId(clientId , msgId));
         return message;
     }
 
     @Override
     public boolean cacheSendMsg(String clientId,Message message){
-        this.jedis.set(sendPrefixAndClientIdAndMsgId(clientId , message.getMsgId()) , JsonObjectHelper.objectToJsonString(message));
+        redisTemplate.opsForValue().set(sendPrefixAndClientIdAndMsgId(clientId , message.getMsgId()) , JsonObjectHelper.objectToJsonString(message));
         return true;
     }
 
     @Override
     public Collection<Message> getAllSendMsg(String clientId){
-        Set<String> keys = this.jedis.keys(sendPrefixAndClientId(clientId + "*"));
+        Set<String> keys = this.redisTemplate.keys(sendPrefixAndClientId(clientId + "*"));
         Collection<Message> collection = new ArrayList<>();
         for (String key : keys) {
-            String messageString = this.jedis.get(key);
+            String messageString = this.redisTemplate.opsForValue().get(key);
             if(StringUtils.isEmpty(messageString)){
                 continue;
             }
@@ -82,13 +82,13 @@ public class RedisFlowMessageStore implements FlowMessageStore {
 
     @Override
     public boolean releaseSendMsg(String clientId,long msgId){
-        this.jedis.del(sendPrefixAndClientIdAndMsgId(clientId , msgId));
+        this.redisTemplate.delete(sendPrefixAndClientIdAndMsgId(clientId , msgId));
         return true;
     }
 
     @Override
     public boolean containSendMsg(String clientId,long msgId){
-        return jedis.exists(sendPrefixAndClientIdAndMsgId(clientId , msgId));
+        return redisTemplate.hasKey(sendPrefixAndClientIdAndMsgId(clientId , msgId));
     }
 
     private String sendPrefixAndClientIdAndMsgId(String clientId,long msgId){

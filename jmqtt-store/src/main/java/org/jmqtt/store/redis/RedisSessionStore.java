@@ -5,6 +5,7 @@ import org.jmqtt.common.log.LoggerName;
 import org.jmqtt.store.SessionStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import redis.clients.jedis.Jedis;
 
 import java.util.Objects;
@@ -19,27 +20,27 @@ public class RedisSessionStore implements SessionStore {
 
     private static final Logger logger = LoggerFactory.getLogger(LoggerName.STORE);
 
+    private RedisTemplate<String , String> redisTemplate;
 
-    private Jedis jedis;
-
-    public RedisSessionStore(Jedis jedis){
+    public RedisSessionStore(RedisTemplate<String , String> redisTemplate){
         logger.info("RedisSessionStore init...");
-        this.jedis = jedis;
+        this.redisTemplate = redisTemplate;
     }
 
     @Override
     public boolean containSession(String clientId) {
-        return jedis.exists(prefixAndTopic(clientId));
+        return redisTemplate.hasKey(prefixAndTopic(clientId));
     }
 
     @Override
     public Object setSession(String clientId, Object obj) {
-        return jedis.set(prefixAndTopic(clientId) , JsonObjectHelper.objectToJsonString(obj));
+        redisTemplate.opsForValue().set(prefixAndTopic(clientId) , JsonObjectHelper.objectToJsonString(obj));
+        return obj;
     }
 
     @Override
     public Object getLastSession(String clientId) {
-        String sessionString = this.jedis.get(prefixAndTopic(clientId));
+        String sessionString = this.redisTemplate.opsForValue().get(prefixAndTopic(clientId));
         if(Objects.nonNull(sessionString)){
             return JsonObjectHelper.jsonStringToObject(sessionString , Object.class);
         }
@@ -48,7 +49,7 @@ public class RedisSessionStore implements SessionStore {
 
     @Override
     public boolean clearSession(String clientId) {
-        jedis.del(prefixAndTopic(clientId));
+        redisTemplate.delete(prefixAndTopic(clientId));
         return true;
     }
 

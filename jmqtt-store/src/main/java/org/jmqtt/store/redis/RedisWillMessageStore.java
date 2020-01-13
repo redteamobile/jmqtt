@@ -6,6 +6,7 @@ import org.jmqtt.common.log.LoggerName;
 import org.jmqtt.store.WillMessageStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import redis.clients.jedis.Jedis;
 
 /**
@@ -18,33 +19,32 @@ public class RedisWillMessageStore implements WillMessageStore {
 
     private static final Logger logger = LoggerFactory.getLogger(LoggerName.STORE);
 
+    private RedisTemplate<String , String> redisTemplate;
 
-    private Jedis jedis;
-
-    public RedisWillMessageStore(Jedis jedis){
+    public RedisWillMessageStore(RedisTemplate<String , String> redisTemplate){
         logger.info("RedisWillMessageStore init...");
-        this.jedis = jedis;
+        this.redisTemplate = redisTemplate;
     }
 
     @Override
     public Message getWillMessage(String clientId) {
-        return JsonObjectHelper.jsonStringToObject(jedis.get(prefixAndClinetId(clientId)) , Message.class);
+        return JsonObjectHelper.jsonStringToObject(redisTemplate.opsForValue().get(prefixAndClinetId(clientId)) , Message.class);
     }
 
     @Override
     public boolean hasWillMessage(String clientId) {
-        return jedis.exists(prefixAndClinetId(clientId));
+        return redisTemplate.hasKey(prefixAndClinetId(clientId));
     }
 
     @Override
     public void storeWillMessage(String clientId, Message message) {
-        jedis.set(prefixAndClinetId(clientId) , JsonObjectHelper.objectToJsonString(message));
+        redisTemplate.opsForValue().set(prefixAndClinetId(clientId) , JsonObjectHelper.objectToJsonString(message));
     }
 
     @Override
     public Message removeWillMessage(String clientId) {
         Message message = getWillMessage(clientId);
-        jedis.del(prefixAndClinetId(clientId));
+        redisTemplate.delete(prefixAndClinetId(clientId));
         return message;
     }
 

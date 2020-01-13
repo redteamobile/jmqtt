@@ -104,7 +104,7 @@ public class BrokerController {
                     this.abstractMqttStore = new RDBMqttStore(storeConfig);
                     break;
                 case 2:
-                    this.abstractMqttStore = new RedisMqttStore(storeConfig);
+                    this.abstractMqttStore = new RedisMqttStore();
                     log.info("JMQTT store type is redis");
                     break;
                 default:

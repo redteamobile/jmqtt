@@ -6,6 +6,7 @@ import org.jmqtt.common.log.LoggerName;
 import org.jmqtt.store.RetainMessageStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import redis.clients.jedis.Jedis;
 
 import java.util.ArrayList;
@@ -22,19 +23,19 @@ import java.util.Set;
 public class RedisRetainMessageStore implements RetainMessageStore {
 
     private static final Logger logger = LoggerFactory.getLogger(LoggerName.STORE);
-    private Jedis jedis;
+    private RedisTemplate<String , String> redisTemplate;
 
-    public RedisRetainMessageStore(Jedis jedis){
+    public RedisRetainMessageStore(RedisTemplate<String , String> redisTemplate){
         logger.info("RedisRetainMessageStore init...");
-        this.jedis = jedis;
+        this.redisTemplate = redisTemplate;
     }
 
     @Override
     public Collection<Message> getAllRetainMessage() {
-        Set<String> keys = jedis.keys(prefixAndTopic("*"));
+        Set<String> keys = redisTemplate.keys(prefixAndTopic("*"));
         Collection<Message> retainMessages = new ArrayList<>();
         for(String key : keys){
-            String retainMsgJsonStr = jedis.get(key);
+            String retainMsgJsonStr = redisTemplate.opsForValue().get(key);
             if(Objects.nonNull(retainMsgJsonStr)){
                 retainMessages.add(JsonObjectHelper.jsonStringToObject(retainMsgJsonStr , Message.class));
             }
@@ -44,12 +45,12 @@ public class RedisRetainMessageStore implements RetainMessageStore {
 
     @Override
     public void storeRetainMessage(String topic, Message message) {
-        this.jedis.set(prefixAndTopic(topic) , JsonObjectHelper.objectToJsonString(message));
+        this.redisTemplate.opsForValue().set(prefixAndTopic(topic) , JsonObjectHelper.objectToJsonString(message));
     }
 
     @Override
     public void removeRetainMessage(String topic) {
-        this.jedis.del(prefixAndTopic(topic));
+        this.redisTemplate.delete(prefixAndTopic(topic));
     }
 
     private String prefixAndTopic(String topic){

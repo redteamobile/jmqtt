@@ -2,10 +2,12 @@ package org.jmqtt.store.redis;
 
 import org.jmqtt.common.config.StoreConfig;
 import org.jmqtt.common.log.LoggerName;
+import org.jmqtt.persistent.utils.SpringUtil;
 import org.jmqtt.store.AbstractMqttStore;
 import org.jmqtt.store.memory.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -21,31 +23,23 @@ public class RedisMqttStore extends AbstractMqttStore {
 
     private static final Logger logger = LoggerFactory.getLogger(LoggerName.STORE);
 
-    private StoreConfig storeConfig;
+    private RedisTemplate<String , String> redisTemplate;
 
-    public RedisMqttStore(StoreConfig storeConfig){
-       this.storeConfig = storeConfig;
-    }
+    public RedisMqttStore(){
+        RedisTemplate<String, String> redisTemplate = (RedisTemplate<String, String>)SpringUtil.getBean("redisTemplate");
+        this.redisTemplate = redisTemplate;
 
-    private Jedis generateJedis(StoreConfig storeConfig){
-        Jedis jedis = new Jedis(storeConfig.getNodes());
-
-        if(!(storeConfig.getPassword() == null || storeConfig.getPassword().trim().equals(""))){
-            jedis.auth(storeConfig.getPassword().trim());
-        }
-
-        return jedis;
     }
 
     @Override
     public void init(){
         logger.info("Redis Mqtt Store start to init...");
-        this.flowMessageStore = new RedisFlowMessageStore(generateJedis(storeConfig));
-        this.willMessageStore = new RedisWillMessageStore(generateJedis(storeConfig));
-        this.retainMessageStore = new RedisRetainMessageStore(generateJedis(storeConfig));
-        this.offlineMessageStore = new RedisOfflineMessageStore(generateJedis(storeConfig));
-        this.subscriptionStore = new RedisSubscriptionStore(generateJedis(storeConfig));
-        this.sessionStore = new RedisSessionStore(generateJedis(storeConfig));
+        this.flowMessageStore = new RedisFlowMessageStore(redisTemplate);
+        this.willMessageStore = new RedisWillMessageStore(redisTemplate);
+        this.retainMessageStore = new RedisRetainMessageStore(redisTemplate);
+        this.offlineMessageStore = new RedisOfflineMessageStore(redisTemplate);
+        this.subscriptionStore = new RedisSubscriptionStore(redisTemplate);
+        this.sessionStore = new RedisSessionStore(redisTemplate);
     }
 
     @Override
