@@ -21,6 +21,10 @@
             <artifactId>jmqtt-common</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.jmqtt</groupId>
+            <artifactId>persistent</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.rocksdb</groupId>
             <artifactId>rocksdbjni</artifactId>
         </dependency>
