@@ -4,13 +4,13 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.mqtt.MqttMessage;
 import org.jmqtt.broker.BrokerController;
 import org.jmqtt.broker.subscribe.SubscriptionMatcher;
+import org.jmqtt.common.bean.Subscription;
 import org.jmqtt.common.enums.DisconnectReason;
+import org.jmqtt.common.log.LoggerName;
 import org.jmqtt.persistent.asyncTask.AsyncTask;
 import org.jmqtt.persistent.utils.SpringUtil;
-import org.jmqtt.remoting.session.ClientSession;
-import org.jmqtt.common.bean.Subscription;
-import org.jmqtt.common.log.LoggerName;
 import org.jmqtt.remoting.netty.RequestProcessor;
+import org.jmqtt.remoting.session.ClientSession;
 import org.jmqtt.remoting.session.ConnectManager;
 import org.jmqtt.remoting.util.NettyUtil;
 import org.jmqtt.store.SessionStore;
@@ -18,9 +18,7 @@ import org.jmqtt.store.SubscriptionStore;
 import org.jmqtt.store.WillMessageStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.xml.ws.Action;
 import java.util.Collection;
 
 public class DisconnectProcessor implements RequestProcessor {
