@@ -11,8 +11,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class DefaultFlowMessageStore implements FlowMessageStore {
 
-    private Map<String, ConcurrentHashMap<Integer,Message>> recCache = new ConcurrentHashMap<>();
-    private Map<String, ConcurrentHashMap<Integer,Message>> sendCache = new ConcurrentHashMap<>();
+    private Map<String, ConcurrentHashMap<Long,Message>> recCache = new ConcurrentHashMap<>();
+    private Map<String, ConcurrentHashMap<Long,Message>> sendCache = new ConcurrentHashMap<>();
 
     @Override
     public void clearClientFlowCache(String clientId) {
@@ -31,7 +31,7 @@ public class DefaultFlowMessageStore implements FlowMessageStore {
         if(!recCache.containsKey(clientId)){
             synchronized (recCache){
                 if(!recCache.containsKey(clientId)){
-                    recCache.put(clientId,new ConcurrentHashMap<Integer,Message>());
+                    recCache.put(clientId,new ConcurrentHashMap<Long,Message>());
                 }
             }
         }

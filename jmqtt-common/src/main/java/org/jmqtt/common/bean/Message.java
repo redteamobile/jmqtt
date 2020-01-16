@@ -9,7 +9,7 @@ import java.util.Objects;
  */
 public class Message {
 
-    private int msgId;
+    private long msgId;
 
     private Map<String,Object> headers;
 
@@ -43,11 +43,11 @@ public class Message {
         return headers.get(key);
     }
 
-    public int getMsgId() {
+    public long getMsgId() {
         return msgId;
     }
 
-    public void setMsgId(int msgId) {
+    public void setMsgId(long msgId) {
         this.msgId = msgId;
     }
 

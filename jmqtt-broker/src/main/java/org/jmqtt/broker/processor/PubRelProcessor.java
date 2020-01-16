@@ -32,7 +32,7 @@ public class PubRelProcessor extends AbstractMessageProcessor implements Request
     @Override
     public void processRequest(ChannelHandlerContext ctx, MqttMessage mqttMessage) {
         String clientId = NettyUtil.getClientId(ctx.channel());
-        int messageId = MessageUtil.getMessageId(mqttMessage);
+        long messageId = MessageUtil.getMessageId(mqttMessage);
         if(ConnectManager.getInstance().containClient(clientId)){
             Message message = flowMessageStore.releaseRecMsg(clientId,messageId);
             if(Objects.nonNull(message)){
