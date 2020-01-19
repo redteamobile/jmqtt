@@ -1,4 +1,4 @@
-package org.jmqtt.controller.model.page;
+package org.jmqtt.persistent.model.page;
 
 import com.google.common.base.MoreObjects;
 

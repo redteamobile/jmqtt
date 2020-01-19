@@ -1,8 +1,8 @@
 package org.jmqtt.controller.controller;
 
 import org.jmqtt.broker.YunbaMessageUtil;
-import org.jmqtt.controller.model.page.ResponseStruct;
-import org.jmqtt.controller.model.req.PublishReq;
+import org.jmqtt.persistent.model.page.ResponseStruct;
+import org.jmqtt.persistent.model.req.PublishReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
