@@ -2,7 +2,7 @@ package org.jmqtt.controller.controller;
 
 
 import org.jmqtt.controller.i18n.LocaleMessageSource;
-import org.jmqtt.controller.model.page.ResponseStruct;
+import org.jmqtt.persistent.model.page.ResponseStruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

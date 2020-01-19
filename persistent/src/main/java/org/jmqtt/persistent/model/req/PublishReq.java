@@ -1,4 +1,4 @@
-package org.jmqtt.controller.model.req;
+package org.jmqtt.persistent.model.req;
 
 import lombok.Builder;
 import lombok.Data;
