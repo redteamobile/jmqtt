@@ -32,6 +32,9 @@ public class SingleChannelDeviceController extends BaseController{
         }
         logger.info("received request from single channel device to get ticket body is {}", body);
         SingleChannelDeviceResp singleChannelDeviceResp = ticketService.servForSingleChannelDevice(JsonUtils.parseJsonString(body, YunBaTicketReq.class));
-        return ResponseEntity.ok(singleChannelDeviceResp);
+        String s = "\r\n" + "{" + "\"u\": \"" + singleChannelDeviceResp.getU() + "\"," + "\"p\": \""
+                + singleChannelDeviceResp.getP() + "\"," + "\"d\": \"" + singleChannelDeviceResp.getD() + "\"," + "\"c\": \""
+                + singleChannelDeviceResp.getC() + "\"}" + "\r\n";
+        return ResponseEntity.ok(s);
     }
 }
