@@ -20,12 +20,12 @@ public class TicketService {
             singleChannelDeviceResp.setC(
                     yunBaTicketReq.getD().substring(yunBaTicketReq.getD().length() - 23 , yunBaTicketReq.getD().length()));
         }else if(yunBaTicketReq.getD().length() < 23){
+            //通过计算D的hash值来补全到23位，这样确保设备每次请求获取到的clientId都是相同的
             int padding = 23 - yunBaTicketReq.getD().length();
-            String paddingString = RandomStringUtils.randomAlphabetic(padding);
+            String paddingString = (yunBaTicketReq.getD().hashCode() + "").substring(0 , padding);
             singleChannelDeviceResp.setC(yunBaTicketReq.getD() + paddingString);
         }else{
             singleChannelDeviceResp.setC(yunBaTicketReq.getD());
-
         }
 
         return singleChannelDeviceResp;
