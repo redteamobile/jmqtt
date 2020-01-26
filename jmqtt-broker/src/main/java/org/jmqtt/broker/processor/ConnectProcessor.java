@@ -141,7 +141,7 @@ public class ConnectProcessor implements RequestProcessor {
             }
             log.info("[CONNECT] -> {} connect to this mqtt server",clientId);
 
-            //持久化上线消息到数据库
+            //通知监控系统并刷新计数
             asyncTask.connect(clientId);
 
             reConnect2SendMessage(clientId);

@@ -9,6 +9,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * @author Alex Liu
  * @date 2019/12/06
@@ -18,8 +21,8 @@ public class AsyncTask {
 
     private static final Logger logger = LoggerFactory.getLogger(LoggerName.MESSAGE_TRACE);
 
-    @Autowired
-    private RedisTemplate<String , String> redisTemplate;
+    private ConcurrentHashMap<String , String> concurrentHashMap = new ConcurrentHashMap<>();
+    private Set<String> concurrentHashSet = concurrentHashMap.newKeySet();
 
     @Autowired
     private PresenceService presenceService;
@@ -40,18 +43,18 @@ public class AsyncTask {
     public void disconnect(String clientId , String reason){
         logger.info("client {} disconnect ..." , clientId);
         presenceService.disconnect(clientId , reason);
-        redisTemplate.delete(addClinetCountPrefix(clientId));
+        concurrentHashSet.remove(clientId);
     }
 
     @Async("brokerAsyncPool")
     public void connect(String clientId){
         logger.info("client {} connect ..." , clientId);
         presenceService.connect(clientId);
-        redisTemplate.opsForValue().set(addClinetCountPrefix(clientId) , "");
+        concurrentHashSet.add(clientId);
     }
 
-    private String addClinetCountPrefix(String clientId){
-        return "clientCount" + clientId;
+    public Integer getClinetNumber(){
+        return concurrentHashSet.size();
     }
 
 }

@@ -52,6 +52,8 @@ public class NettyConnectHandler extends ChannelDuplexHandler {
             if(event.state().equals(IdleState.READER_IDLE)){
                 final String remoteAddr = RemotingHelper.getRemoteAddr(ctx.channel());
                 log.warn("[HEART_BEAT] -> IDLE exception, addr = {}",remoteAddr);
+                String clientId = NettyUtil.getClientId(ctx.channel());
+                asyncTask.disconnect(clientId , DisconnectReason.IDLETIMEOUT.toString());
                 RemotingHelper.closeChannel(ctx.channel());
                 this.eventExcutor.putNettyEvent(new NettyEvent(remoteAddr,NettyEventType.IDLE,ctx.channel()));
             }
@@ -62,6 +64,8 @@ public class NettyConnectHandler extends ChannelDuplexHandler {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause){
         String remoteAddr = RemotingHelper.getRemoteAddr(ctx.channel());
         log.warn("Channel caught Exception remotingAddr:{},cause:{}", remoteAddr,cause);
+        String clientId = NettyUtil.getClientId(ctx.channel());
+        asyncTask.disconnect(clientId , DisconnectReason.IDLETIMEOUT.toString());
         RemotingHelper.closeChannel(ctx.channel());
         this.eventExcutor.putNettyEvent(new NettyEvent(remoteAddr,NettyEventType.EXCEPTION,ctx.channel()));
     }

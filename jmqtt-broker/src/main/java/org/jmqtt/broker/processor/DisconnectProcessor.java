@@ -48,7 +48,6 @@ public class DisconnectProcessor implements RequestProcessor {
         clearSubscriptions(clientSession);
         clearWillMessage(clientSession.getClientId());
         ConnectManager.getInstance().removeClient(clientId);
-        asyncTask.disconnect(clientId , DisconnectReason.CLOSED.toString());
         ctx.close();
     }
 

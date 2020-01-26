@@ -1,6 +1,7 @@
 package org.jmqtt.controller.controller;
 
 import org.jmqtt.broker.YunbaMessageUtil;
+import org.jmqtt.persistent.asyncTask.AsyncTask;
 import org.jmqtt.persistent.model.page.ResponseStruct;
 import org.jmqtt.persistent.model.req.PublishReq;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import java.util.Set;
 public class PublishController extends BaseController{
 
     @Autowired
-    private RedisTemplate<String , String> redisTemplate;
+    private AsyncTask asyncTask;
 
     @PostMapping("/publish")
     public ResponseStruct publish(@Valid @RequestBody PublishReq request){
@@ -29,8 +30,7 @@ public class PublishController extends BaseController{
 
     @GetMapping("/get")
     public ResponseStruct get(){
-        Set<String> sets = redisTemplate.keys("clientCount*");
-        return succ(sets.size());
+        return succ(asyncTask.getClinetNumber());
     }
 
 }
