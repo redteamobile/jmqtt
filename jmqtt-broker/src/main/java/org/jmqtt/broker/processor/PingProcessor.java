@@ -16,9 +16,9 @@ public class PingProcessor implements RequestProcessor {
 
     @Override
     public void processRequest(ChannelHandlerContext ctx, MqttMessage mqttMessage) {
-        log.info("[PingMessage] get ping package from client {}" , NettyUtil.getClientId(ctx.channel()));
+        //log.info("[PingMessage] get ping package from client {}" , NettyUtil.getClientId(ctx.channel()));
         MqttMessage pingRespMessage = MessageUtil.getPingRespMessage();
-        log.info("[PingMessage] return ping resMessage {} to client {}" , pingRespMessage , NettyUtil.getClientId(ctx.channel()));
+        //log.info("[PingMessage] return ping resMessage {} to client {}" , pingRespMessage , NettyUtil.getClientId(ctx.channel()));
 
         ctx.writeAndFlush(pingRespMessage);
     }
