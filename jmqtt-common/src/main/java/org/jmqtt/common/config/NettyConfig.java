@@ -2,8 +2,8 @@ package org.jmqtt.common.config;
 
 public class NettyConfig {
 
-    private int selectorThreadNum = 3;
-    private int ioThreadNum = 8;
+    private int selectorThreadNum = 30;
+    private int ioThreadNum = 50;
     private int tcpBackLog = 1024;
     private boolean tcpNoDelay = false;
     private boolean tcpReuseAddr = true;
