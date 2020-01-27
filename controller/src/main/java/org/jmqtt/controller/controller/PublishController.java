@@ -19,18 +19,10 @@ import java.util.Set;
 @RequestMapping("/api/v1")
 public class PublishController extends BaseController{
 
-    @Autowired
-    private AsyncTask asyncTask;
-
     @PostMapping("/publish")
     public ResponseStruct publish(@Valid @RequestBody PublishReq request){
         YunbaMessageUtil.pushMessage(request.getTopic() , request.getMessage() , request.getQos() , request.isRetain());
         return succ();
-    }
-
-    @GetMapping("/get")
-    public ResponseStruct get(){
-        return succ(asyncTask.getClinetNumber());
     }
 
 }

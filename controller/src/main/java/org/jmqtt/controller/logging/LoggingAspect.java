@@ -6,6 +6,8 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.jmqtt.persistent.asyncTask.AsyncTask;
+import org.jmqtt.persistent.utils.APIMonitoringUtils;
 import org.jmqtt.persistent.utils.ExceptionLoggingHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
 /**
  * Aspect for logging execution of service and controller Spring components.
@@ -57,6 +61,7 @@ public class LoggingAspect {
         logger.info("#REQUEST# {}.{} with argument[s] => {}", joinPoint.getSignature().getDeclaringType().getSimpleName(),
                 joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
         try {
+            APIMonitoringUtils.count(joinPoint.getSignature().getName());
             Object result = joinPoint.proceed();
             logger.info("#RESPONSE# {}.{} with result => {}", joinPoint.getSignature().getDeclaringType().getSimpleName(),
                     joinPoint.getSignature().getName(), result);
