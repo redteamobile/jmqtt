@@ -40,7 +40,7 @@ public class NettyConnectHandler extends ChannelDuplexHandler {
         if(clientId != null){
             log.debug("[ChannelInactive] -> addr = {}",remoteAddr);
             this.eventExcutor.putNettyEvent(new NettyEvent(remoteAddr,NettyEventType.CLOSE,ctx.channel()));
-            asyncTask.disconnect(clientId , DisconnectReason.IDLETIMEOUT.toString());
+            asyncTask.disconnect(clientId , DisconnectReason.CLOSED.toString());
         }
 
     }
@@ -65,7 +65,7 @@ public class NettyConnectHandler extends ChannelDuplexHandler {
         String remoteAddr = RemotingHelper.getRemoteAddr(ctx.channel());
         log.warn("Channel caught Exception remotingAddr:{},cause:{}", remoteAddr,cause);
         String clientId = NettyUtil.getClientId(ctx.channel());
-        asyncTask.disconnect(clientId , DisconnectReason.IDLETIMEOUT.toString());
+        asyncTask.disconnect(clientId , DisconnectReason.EXCEPTION.toString());
         RemotingHelper.closeChannel(ctx.channel());
         this.eventExcutor.putNettyEvent(new NettyEvent(remoteAddr,NettyEventType.EXCEPTION,ctx.channel()));
     }

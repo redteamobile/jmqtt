@@ -88,7 +88,7 @@ public class SubscribeProcessor implements RequestProcessor {
             Subscription subscription = new Subscription(clientSession.getClientId(),topic.getTopicName(),topic.getQos());
             boolean subRs = this.subscriptionMatcher.subscribe(subscription);
             if(subRs){
-                //订阅成功后将记录持久化到数据库表
+                //订阅成功通知cthulhu
                 asyncTask.subscribe(topic.getTopicName() , clientSession.getClientId());
 
                 if(retainMessages == null){

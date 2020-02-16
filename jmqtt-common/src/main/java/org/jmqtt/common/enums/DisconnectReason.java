@@ -6,7 +6,8 @@ package org.jmqtt.common.enums;
  */
 public enum DisconnectReason {
     CLOSED("closed"),
-    IDLETIMEOUT("idle_timeout")
+    IDLETIMEOUT("idle_timeout"),
+    EXCEPTION("exception")
     ;
 
     DisconnectReason(String val) {

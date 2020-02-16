@@ -45,6 +45,8 @@ public class ClusterOuterAPI {
         }
         String addr = currentIp + ":" + clusterConfig.getGroupServerPort();
         ServerNode currentNode = new ServerNode(clusterConfig.getNodeName(), addr);
+
+        //TODO:需增加在springboot配置文件中获取clusterNodes的过程
         ClusterNodeManager.getInstance().setCurrentNode(currentNode);
         if (StringUtils.isEmpty(clusterConfig.getGroupNodes())) {
             log.info("there is no other nodes to connect");
